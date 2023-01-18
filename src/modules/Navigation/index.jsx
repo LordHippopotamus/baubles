@@ -1,5 +1,5 @@
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { useUserStore } from 'modules/user';
+import { useUserStore } from 'modules/firebase';
 import { Link } from 'react-router-dom';
 import UserMenu from './UserMenu';
 

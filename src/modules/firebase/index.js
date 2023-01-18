@@ -1,6 +1,12 @@
 import { create } from 'zustand';
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -14,4 +20,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export const useFirebaseStore = create(() => ({ app, auth }));
+export const useUserStore = create(() => ({
+  user: undefined,
+  signIn: async (email, password) => await signInWithEmailAndPassword(auth, email, password),
+  signUp: async (email, password) => await createUserWithEmailAndPassword(auth, email, password),
+  signOut: async () => await signOut(auth),
+}));
+
+onAuthStateChanged(auth, user => useUserStore.setState({ user }));
