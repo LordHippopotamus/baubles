@@ -4,12 +4,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Root from 'routes/root';
 import Login from 'routes/login';
+import AddBauble from './routes/addBauble';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    children: [{ path: '/login', element: <Login /> }],
+    children: [
+      { path: '/login', element: <Login /> },
+      { path: 'add-bauble', element: <AddBauble /> },
+    ],
   },
 ]);
 

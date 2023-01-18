@@ -1,6 +1,7 @@
 import { AccountCircle } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useUserStore } from '../firebase';
 
 const UserMenu = () => {
@@ -35,7 +36,9 @@ const UserMenu = () => {
         open={Boolean(anchor)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Add bauble</MenuItem>
+        <MenuItem component={Link} to="/add-bauble" onClick={handleClose}>
+          Add bauble
+        </MenuItem>
         <MenuItem onClick={handleClose}>Account</MenuItem>
         <MenuItem onClick={() => signOut().then(handleClose)}>Sign Out</MenuItem>
       </Menu>
