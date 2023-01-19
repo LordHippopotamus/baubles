@@ -1,15 +1,16 @@
-import { LoadingButton } from '@mui/lab';
-import { TextField } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '../firebase';
+import { useUserStore } from 'modules/firebase';
+import { EmailInput, ErrorAlert, PasswordInput, SubmitButton } from './Inputs';
 
 const SignInForm = () => {
   const {
     register,
+    watch,
     formState: { errors },
     setError,
+    clearErrors,
     handleSubmit,
   } = useForm();
 
@@ -24,11 +25,17 @@ const SignInForm = () => {
       navigate('/');
     } catch (error) {
       switch (error.code) {
+        case 'auth/invalid-email':
+          setError('email', { message: 'Invalide email address' });
+          break;
         case 'auth/user-not-found':
           setError('email', { message: 'User with with email was not found' });
           break;
         case 'auth/wrong-password':
           setError('password', { message: 'Wrong password' });
+          break;
+        default:
+          setError('alert', { message: 'Something went wrong! Maybe password is empty?' });
           break;
       }
     }
@@ -37,34 +44,12 @@ const SignInForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <TextField
-        {...register('email')}
-        error={Boolean(errors.email)}
-        helperText={errors.email?.message}
-        label="Email Address"
-        name="email"
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        {...register('password')}
-        error={Boolean(errors.password)}
-        helperText={errors.password?.message}
-        label="Password"
-        type="password"
-        name="password"
-        fullWidth
-        margin="normal"
-      />
-      <LoadingButton
-        variant="contained"
-        loading={loading}
-        type="submit"
-        size="large"
-        sx={{ mt: 2 }}
-      >
+      <EmailInput register={register} errors={errors} />
+      <PasswordInput register={register} errors={errors} />
+      <ErrorAlert errors={errors} watch={watch} clearErrors={clearErrors} />
+      <SubmitButton errors={errors} loading={loading}>
         Sign In
-      </LoadingButton>
+      </SubmitButton>
     </form>
   );
 };
