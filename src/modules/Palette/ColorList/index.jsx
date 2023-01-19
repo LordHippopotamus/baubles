@@ -6,7 +6,7 @@ import ColorButton from './ColorButton';
 import ContextMenu from './ContextMenu';
 
 const ColorList = ({ open }) => {
-  const palette = usePaletteStore(state => state.palette);
+  const palette = usePaletteStore(state => state.getPalette());
 
   const [colorModal, setColorModal] = useState(null);
   const [contextMenu, setContextMenu] = useState(null);

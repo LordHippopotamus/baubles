@@ -5,7 +5,7 @@ import ColorList from './ColorList';
 import { usePaletteStore } from './paletteStore';
 
 const Palette = () => {
-  const color = usePaletteStore(state => state.getSelectedColor());
+  const color = usePaletteStore(state => state.getColor());
   const [open, setOpen] = useState(false);
 
   return (

@@ -3,7 +3,7 @@ import { usePaletteStore } from '../paletteStore';
 
 const ContextMenu = ({ anchor, handleClose, handleColorModal }) => {
   const selectColor = usePaletteStore(state => state.selectColor);
-  const changeColor = usePaletteStore(state => state.changeColor);
+  const resetColor = usePaletteStore(state => state.resetColor);
 
   return (
     <Menu
@@ -30,7 +30,7 @@ const ContextMenu = ({ anchor, handleClose, handleColorModal }) => {
       </MenuItem>
       <MenuItem
         onClick={() => {
-          changeColor(anchor.colorId, null);
+          resetColor(anchor.colorId);
           handleClose();
         }}
       >

@@ -4,7 +4,7 @@ import { ChromePicker } from 'react-color';
 import { usePaletteStore } from '../paletteStore';
 
 const ColorModal = ({ colorModal, handleColorModal }) => {
-  const palette = usePaletteStore(state => state.palette);
+  const palette = usePaletteStore(state => state.getPalette());
   const changeColor = usePaletteStore(state => state.changeColor);
   const defaultColor = palette.find(el => el.id === colorModal)?.color;
   const [color, setColor] = useState(defaultColor || '#fff');
