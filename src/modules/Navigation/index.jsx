@@ -1,25 +1,14 @@
-import { AppBar, Button, Toolbar, Typography } from '@mui/material';
-import { useUserStore } from 'modules/firebase';
-import { Link } from 'react-router-dom';
-import UserMenu from './UserMenu';
+import { AppBar } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import DefaultToolbar from './DefaultToolbar';
+import EditorToolbar from './EditorToolbar';
 
 const Navigation = () => {
-  const user = useUserStore(state => state.user);
+  const { pathname } = useLocation();
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Baubles
-        </Typography>
-        {user ? (
-          <UserMenu />
-        ) : (
-          <Button component={Link} to="/login" color="inherit">
-            Sign In
-          </Button>
-        )}
-      </Toolbar>
+    <AppBar position="fixed" sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
+      {pathname === '/add-bauble' ? <EditorToolbar /> : <DefaultToolbar />}
     </AppBar>
   );
 };

@@ -1,6 +1,12 @@
 import Palette from 'modules/Palette';
+import Editor from 'modules/Editor';
 import withUser from 'modules/Login/withUser';
 
-const AddBauble = withUser(() => <Palette />);
+const AddBauble = () => (
+  <>
+    <Editor />
+    <Palette />
+  </>
+);
 
-export default AddBauble;
+export default withUser(AddBauble);
