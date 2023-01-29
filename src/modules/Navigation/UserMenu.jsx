@@ -39,7 +39,9 @@ const UserMenu = () => {
         <MenuItem component={Link} to="/add-bauble" onClick={handleClose}>
           Add bauble
         </MenuItem>
-        <MenuItem onClick={handleClose}>Account</MenuItem>
+        <MenuItem component={Link} to="/profile" onClick={handleClose}>
+          Profile
+        </MenuItem>
         <MenuItem onClick={() => signOut().then(handleClose)}>Sign Out</MenuItem>
       </Menu>
     </div>

@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import { initializeApp } from 'firebase/app';
+import { addDoc, collection, getDoc, getDocs, getFirestore } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -25,6 +27,31 @@ export const useUserStore = create(() => ({
   signIn: async (email, password) => await signInWithEmailAndPassword(auth, email, password),
   signUp: async (email, password) => await createUserWithEmailAndPassword(auth, email, password),
   signOut: async () => await signOut(auth),
+  changeDisplayName: async displayName => await updateProfile(auth.currentUser, { displayName }),
 }));
 
 onAuthStateChanged(auth, user => useUserStore.setState({ user }));
+
+const db = getFirestore(app);
+
+export const useBaublesStore = create(set => ({
+  personalBaubles: undefined,
+  createBauble: async name => {
+    const user = useUserStore.getState().user.email;
+    const ref = await addDoc(collection(db, 'users', user, 'baubles'), { name });
+    const doc = await getDoc(ref);
+    set(state => ({
+      personalBaubles: state.personalBaubles.concat({ id: doc.id, ...doc.data() }),
+    }));
+  },
+  fetchUserBaubles: user => {
+    set({ personalBaubles: undefined });
+    getDocs(collection(db, 'users', user.email, 'baubles')).then(snapshot => {
+      snapshot.forEach(doc => {
+        set(state => ({
+          personalBaubles: [...(state.personalBaubles || []), { id: doc.id, ...doc.data() }],
+        }));
+      });
+    });
+  },
+}));
