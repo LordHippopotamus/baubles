@@ -10,12 +10,26 @@ import {
 import { Add } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useBaublesStore, useUserStore } from 'modules/firebase';
+import { useUserStore } from 'modules/firebase';
 import { LoadingButton } from '@mui/lab';
+import { useMutation, useQueryClient } from 'react-query';
+import { addDoc, collection } from 'firebase/firestore';
+import { useFirebaseStore } from '../firebase';
 
 const CreateBauble = () => {
+  const db = useFirebaseStore(state => state.db);
   const user = useUserStore(state => state.user);
-  const createBauble = useBaublesStore(state => state.createBauble);
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async name => await addDoc(collection(db, 'users', user.uid, 'baubles'), { name }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['baubles', { user: user.uid }]);
+      },
+    }
+  );
+
   const {
     register,
     handleSubmit,
@@ -28,7 +42,6 @@ const CreateBauble = () => {
   });
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -37,9 +50,7 @@ const CreateBauble = () => {
   };
 
   const handleCreate = async ({ name }) => {
-    setLoading(true);
-    await createBauble(name);
-    setLoading(false);
+    mutation.mutate(name);
     handleClose();
   };
 
@@ -60,7 +71,7 @@ const CreateBauble = () => {
             <DialogContentText>Enter a name of new bauble</DialogContentText>
             <TextField
               {...register('name', { required: true, minLength: 4, maxLength: 64 })}
-              error={Boolean(errors.name)}
+              error={!!errors.name}
               helperText={
                 (errors.name?.type === 'required' && 'This field is required') ||
                 (errors.name?.type === 'minLength' && 'At least 4 characters') ||
@@ -74,7 +85,7 @@ const CreateBauble = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Close</Button>
-            <LoadingButton loading={loading} type="submit">
+            <LoadingButton loading={mutation.isLoading} type="submit">
               Create
             </LoadingButton>
           </DialogActions>

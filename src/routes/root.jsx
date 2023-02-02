@@ -6,6 +6,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import Navigation from 'modules/Navigation';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const Root = () => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -19,14 +20,16 @@ const Root = () => {
     [prefersDarkMode]
   );
 
+  const queryClient = new QueryClient();
+
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
         <Outlet />
       </ThemeProvider>
-    </>
+    </QueryClientProvider>
   );
 };
 

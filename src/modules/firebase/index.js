@@ -34,24 +34,8 @@ onAuthStateChanged(auth, user => useUserStore.setState({ user }));
 
 const db = getFirestore(app);
 
-export const useBaublesStore = create(set => ({
-  personalBaubles: undefined,
-  createBauble: async name => {
-    const user = useUserStore.getState().user.email;
-    const ref = await addDoc(collection(db, 'users', user, 'baubles'), { name });
-    const doc = await getDoc(ref);
-    set(state => ({
-      personalBaubles: state.personalBaubles.concat({ id: doc.id, ...doc.data() }),
-    }));
-  },
-  fetchUserBaubles: user => {
-    set({ personalBaubles: undefined });
-    getDocs(collection(db, 'users', user.email, 'baubles')).then(snapshot => {
-      snapshot.forEach(doc => {
-        set(state => ({
-          personalBaubles: [...(state.personalBaubles || []), { id: doc.id, ...doc.data() }],
-        }));
-      });
-    });
-  },
+export const useFirebaseStore = create(() => ({
+  app,
+  db,
+  auth,
 }));
