@@ -1,14 +1,16 @@
 import { Brush, FormatColorReset as Clear, Menu, PanTool } from '@mui/icons-material';
-import { Box, Button, Drawer, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useEditorStore } from 'modules/Editor/editorStore';
+import Drawer from './blocks/Drawer';
+import Account from './blocks/Account';
 
 const EditorToolbar = () => {
   const [open, setOpen] = useState(false);
   const tool = useEditorStore(state => state.tool);
   const changeTool = useEditorStore(state => state.changeTool);
 
-  const toggleDrawer = () => setOpen(!open);
+  const openDrawer = () => setOpen(true);
   const closeDrawer = () => setOpen(false);
 
   const select = tool => {
@@ -17,20 +19,18 @@ const EditorToolbar = () => {
   };
 
   return (
-    <>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mr={2}>
+    <Box display="flex">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mr="auto">
         <Box>
-          <Tool icon={<Menu />} onClick={toggleDrawer} />
+          <Tool icon={<Menu />} onClick={openDrawer} />
           <Tool icon={<PanTool />} onClick={() => select('pan')} active={tool === 'pan'} />
           <Tool icon={<Brush />} onClick={() => select('brush')} active={tool === 'brush'} />
           <Tool icon={<Clear />} onClick={() => select('eraser')} active={tool === 'eraser'} />
         </Box>
       </Box>
-      <Drawer anchor="left" open={open} onClose={closeDrawer}>
-        <Toolbar />
-        There&apos;s nothing here yet
-      </Drawer>
-    </>
+      <Account />
+      <Drawer open={open} onClose={closeDrawer} />
+    </Box>
   );
 };
 

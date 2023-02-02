@@ -31,7 +31,12 @@ const Editor = () => {
   };
 
   return (
-    <Box onWheel={handleScale} onMouseMove={handleTranslate} height="100vh" overflow="hidden">
+    <Box
+      onWheel={handleScale}
+      onMouseMove={handleTranslate}
+      height="calc(100vh - 64px)"
+      overflow="hidden"
+    >
       <Canvas scale={scale} translate={translate} />
     </Box>
   );

@@ -7,14 +7,7 @@ const Navigation = () => {
   const { pathname } = useLocation();
   const isEditor = pathname === '/add-bauble';
 
-  return (
-    <AppBar
-      position={isEditor ? 'fixed' : 'static'}
-      sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}
-    >
-      {isEditor ? <EditorToolbar /> : <DefaultToolbar />}
-    </AppBar>
-  );
+  return <AppBar position="static">{isEditor ? <EditorToolbar /> : <DefaultToolbar />}</AppBar>;
 };
 
 export default Navigation;

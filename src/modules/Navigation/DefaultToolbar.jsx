@@ -1,25 +1,24 @@
-import { Button, Toolbar, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useUserStore } from 'modules/firebase';
-import UserMenu from './UserMenu';
+import { Box, Toolbar, Typography } from '@mui/material';
+import Account from './blocks/Account';
+import Links from './blocks/Links';
+import LinksDrawer from './blocks/LinksDrawer';
 
-const DefaultToolbar = () => {
-  const user = useUserStore(state => state.user);
+const DefaultToolbar = () => (
+  <Toolbar>
+    <Box sx={{ mr: 2, display: { md: 'none' } }}>
+      <LinksDrawer />
+    </Box>
 
-  return (
-    <Toolbar>
-      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-        Baubles
-      </Typography>
-      {user ? (
-        <UserMenu />
-      ) : (
-        <Button component={Link} to="/login" color="inherit">
-          Sign In
-        </Button>
-      )}
-    </Toolbar>
-  );
-};
+    <Typography variant="h6">Baubles</Typography>
+
+    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Links />
+    </Box>
+
+    <Box sx={{ ml: 'auto' }}>
+      <Account />
+    </Box>
+  </Toolbar>
+);
 
 export default DefaultToolbar;

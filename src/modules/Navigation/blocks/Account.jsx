@@ -1,10 +1,11 @@
 import { AccountCircle } from '@mui/icons-material';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { Button, IconButton, Menu, MenuItem, Skeleton } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useUserStore } from '../firebase';
+import { useUserStore } from 'modules/firebase';
 
-const UserMenu = () => {
+const Account = () => {
+  const user = useUserStore(state => state.user);
   const [anchor, setAnchor] = useState(null);
 
   const handleOpen = event => setAnchor(event.currentTarget);
@@ -12,8 +13,18 @@ const UserMenu = () => {
 
   const signOut = useUserStore(state => state.signOut);
 
+  if (user === undefined)
+    return <Skeleton sx={{ m: 1 }} variant="circular" width="2.1875em" height="2.1875em" />;
+
+  if (user === null)
+    return (
+      <Button component={Link} to="/login" color="inherit">
+        Sign In
+      </Button>
+    );
+
   return (
-    <div>
+    <>
       <IconButton
         aria-label="account of current user"
         aria-controls="menu-appbar"
@@ -33,7 +44,7 @@ const UserMenu = () => {
           vertical: 'top',
           horizontal: 'left',
         }}
-        open={Boolean(anchor)}
+        open={!!anchor}
         onClose={handleClose}
       >
         <MenuItem component={Link} to="/add-bauble" onClick={handleClose}>
@@ -44,8 +55,8 @@ const UserMenu = () => {
         </MenuItem>
         <MenuItem onClick={() => signOut().then(handleClose)}>Sign Out</MenuItem>
       </Menu>
-    </div>
+    </>
   );
 };
 
-export default UserMenu;
+export default Account;
