@@ -1,4 +1,4 @@
-import BaublesList from './BublesList';
+import BaublesList from './BaublesList';
 import CreateBauble from './createBauble';
 
 const PersonalBaubles = () => (

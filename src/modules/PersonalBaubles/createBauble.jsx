@@ -10,25 +10,21 @@ import {
 import { Add } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useUserStore } from 'modules/firebase';
 import { LoadingButton } from '@mui/lab';
 import { useMutation, useQueryClient } from 'react-query';
-import { addDoc, collection } from 'firebase/firestore';
-import { useFirebaseStore } from '../firebase';
+import { useBaubles } from '../firebase/baubles';
+import { useUserStore } from '../firebase/user';
 
 const CreateBauble = () => {
-  const db = useFirebaseStore(state => state.db);
   const user = useUserStore(state => state.user);
+  const { createBauble } = useBaubles();
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(
-    async name => await addDoc(collection(db, 'users', user.uid, 'baubles'), { name }),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['baubles', { user: user.uid }]);
-      },
-    }
-  );
+  const mutation = useMutation(async name => await createBauble(name), {
+    onSuccess: result => {
+      queryClient.setQueriesData(['baubles', { user: user.uid }], old => old.concat(result));
+    },
+  });
 
   const {
     register,
@@ -50,7 +46,7 @@ const CreateBauble = () => {
   };
 
   const handleCreate = async ({ name }) => {
-    mutation.mutate(name);
+    await mutation.mutateAsync(name);
     handleClose();
   };
 
