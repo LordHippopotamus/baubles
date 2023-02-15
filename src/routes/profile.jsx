@@ -1,7 +1,5 @@
 import { Container } from '@mui/material';
-import withUser from 'modules/Login/withUser';
-import DisplayName from 'modules/DisplayName';
-import PersonalBaubles from 'modules/PersonalBaubles';
+import { DisplayName, PersonalBaubles, withUser } from 'components';
 
 const Profile = () => (
   <Container sx={{ my: 4 }}>

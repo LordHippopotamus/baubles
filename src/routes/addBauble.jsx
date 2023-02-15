@@ -1,6 +1,4 @@
-import Palette from 'modules/Palette';
-import Editor from 'modules/Editor';
-import withUser from 'modules/Login/withUser';
+import { Palette, Editor, withUser } from 'components';
 
 const AddBauble = () => (
   <>

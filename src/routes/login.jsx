@@ -1,4 +1,4 @@
-import Login from 'modules/Login';
+import { Login } from 'components';
 
 const LoginRoute = () => <Login />;
 
