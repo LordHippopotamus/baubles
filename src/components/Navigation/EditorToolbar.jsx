@@ -19,7 +19,7 @@ const EditorToolbar = () => {
   };
 
   return (
-    <Box display="flex">
+    <Box display="flex" alignItems="center" pr={{ xs: 2, sm: 3 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mr="auto">
         <Box>
           <Tool icon={<Menu />} onClick={openDrawer} />
