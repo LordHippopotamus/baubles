@@ -47,9 +47,6 @@ const Account = () => {
         open={!!anchor}
         onClose={handleClose}
       >
-        <MenuItem component={Link} to="/add-bauble" onClick={handleClose}>
-          Add bauble
-        </MenuItem>
         <MenuItem component={Link} to="/profile" onClick={handleClose}>
           Profile
         </MenuItem>

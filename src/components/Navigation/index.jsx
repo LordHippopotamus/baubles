@@ -5,7 +5,7 @@ import EditorToolbar from './EditorToolbar';
 
 const Navigation = () => {
   const { pathname } = useLocation();
-  const isEditor = pathname === '/add-bauble';
+  const isEditor = pathname === '/editor';
 
   return <AppBar position="static">{isEditor ? <EditorToolbar /> : <DefaultToolbar />}</AppBar>;
 };

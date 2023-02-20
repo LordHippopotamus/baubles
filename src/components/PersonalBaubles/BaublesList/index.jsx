@@ -28,6 +28,7 @@ const BaublesList = () => {
     <>
       {data.map(bauble => (
         <BaubleCard
+          uid={user.uid}
           id={bauble.id}
           setEditModal={setEditModal}
           setDeleteModal={setDeleteModal}

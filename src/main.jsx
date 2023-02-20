@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Root from 'routes/root';
 import Login from 'routes/login';
-import AddBauble from './routes/addBauble';
+import Editor from './routes/editor';
 import Profile from './routes/profile';
 
 const router = createBrowserRouter([
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       { path: '/login', element: <Login /> },
-      { path: '/add-bauble', element: <AddBauble /> },
+      { path: '/editor', element: <Editor /> },
       { path: '/profile', element: <Profile /> },
     ],
   },

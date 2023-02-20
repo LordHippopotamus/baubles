@@ -8,4 +8,4 @@ const Profile = () => (
   </Container>
 );
 
-export default withUser(Profile);
+export default withUser(Profile, { requireAuthorization: true });

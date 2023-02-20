@@ -2,7 +2,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Box, Card, CardActionArea, IconButton, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const BaubleCard = ({ id, setEditModal, setDeleteModal, children }) => (
+const BaubleCard = ({ uid, id, setEditModal, setDeleteModal, children }) => (
   <Card
     sx={{
       position: 'relative',
@@ -20,7 +20,7 @@ const BaubleCard = ({ id, setEditModal, setDeleteModal, children }) => (
     </Box>
     <CardActionArea
       component={Link}
-      to="/add-bauble"
+      to={`/editor?owner=${uid}&bauble=${id}`}
       sx={{
         p: 3,
         width: 1,
