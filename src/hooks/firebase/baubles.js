@@ -13,11 +13,26 @@ import { useUserStore } from './user';
 
 const db = getFirestore(app);
 
+const generateArea = (columns, rows) => {
+  const area = [];
+
+  for (let x = 1; x <= columns; x++) {
+    for (let y = 1; y <= rows; y++) {
+      area.push({ x, y, color: null });
+    }
+  }
+
+  return area;
+};
+
 export const useBaubles = () => {
   const user = useUserStore(state => state.user);
 
-  const createBauble = async name => {
-    const ref = await addDoc(collection(db, 'users', user.uid, 'baubles'), { name });
+  const createBauble = async (name, columns, rows) => {
+    const ref = await addDoc(collection(db, 'users', user.uid, 'baubles'), {
+      name,
+      area: generateArea(columns, rows),
+    });
     const snap = await getDoc(ref);
     if (snap.exists()) return { ...snap.data(), id: snap._key.path.segments.pop() };
   };
@@ -44,5 +59,11 @@ export const useBaubles = () => {
     return userBaubles;
   };
 
-  return { createBauble, changeBaubleName, getUserBaubles, deleteBauble };
+  const getBauble = async (uid, id) => {
+    const baubleRef = doc(db, 'users', uid, 'baubles', id);
+    const baubleSnap = await getDoc(baubleRef);
+    if (baubleSnap.exists()) return baubleSnap.data();
+  };
+
+  return { createBauble, changeBaubleName, getUserBaubles, getBauble, deleteBauble };
 };

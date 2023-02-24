@@ -1,5 +1,5 @@
 import { Brush, FormatColorReset as Clear, Menu, PanTool } from '@mui/icons-material';
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, ListItem, ListItemButton, ListItemText, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { useEditorStore } from 'hooks';
 import Drawer from './blocks/Drawer';
@@ -29,21 +29,26 @@ const EditorToolbar = () => {
         </Box>
       </Box>
       <Account />
-      <Drawer open={open} onClose={closeDrawer} />
+      <Drawer open={open} onClose={closeDrawer}>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => console.log('saving')}>
+            <ListItemText primary="Resize" />
+          </ListItemButton>
+        </ListItem>
+      </Drawer>
     </Box>
   );
 };
 
 const Tool = ({ icon, active, ...props }) => {
-  const { palette, breakpoints } = useTheme();
-  const xs = useMediaQuery(breakpoints.down('md'));
+  const { palette } = useTheme();
 
   return (
     <Button
       color="inherit"
       sx={{
-        height: xs ? '56px' : '64px',
-        minWidth: xs ? '56px' : '64px',
+        height: { xs: 56, sm: 64 },
+        minWidth: { xs: 56, sm: 64 },
         borderRadius: 0,
         background: active ? palette.action.selected : 'transparent',
       }}

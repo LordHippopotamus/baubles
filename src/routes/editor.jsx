@@ -1,12 +1,30 @@
 import { Palette, Editor, withUser } from 'components';
+import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
+import { useBaubles, useEditorStore } from 'hooks';
 
-const EditorRoute = () => (
-  <>
-    <Editor />
-    <Palette />
-  </>
-);
+const EditorRoute = () => {
+  const { getBauble } = useBaubles();
+
+  const [params] = useSearchParams();
+  const baubleOwner = params.get('owner');
+  const baubleId = params.get('bauble');
+
+  const { data: bauble } = useQuery(
+    ['baubles', { user: baubleOwner, id: baubleId }],
+    () => getBauble(baubleOwner, baubleId),
+    {
+      onSuccess: ({ area }) => useEditorStore.setState({ area }),
+    }
+  );
+
+  return (
+    <>
+      <Editor />
+      <Palette />
+    </>
+  );
+};
 
 export default withUser(EditorRoute, {
   requireAuthorization: true,
@@ -14,7 +32,6 @@ export default withUser(EditorRoute, {
   shouldCheckPermissions: true,
   useOwnerId: () => {
     const [params] = useSearchParams();
-    const uid = params.get('owner');
-    return uid;
+    return params.get('owner');
   },
 });

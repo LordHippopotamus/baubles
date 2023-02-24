@@ -1,7 +1,7 @@
 import { Drawer as MuiDrawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const Drawer = ({ pages = [{ name: 'Home', path: '/' }], open, onClose }) => (
+const Drawer = ({ pages = [{ name: 'Home', path: '/' }], children, open, onClose }) => (
   <MuiDrawer
     PaperProps={{
       sx: { minWidth: '12rem' },
@@ -17,6 +17,7 @@ const Drawer = ({ pages = [{ name: 'Home', path: '/' }], open, onClose }) => (
           </ListItemButton>
         </ListItem>
       ))}
+      {children}
     </List>
   </MuiDrawer>
 );
