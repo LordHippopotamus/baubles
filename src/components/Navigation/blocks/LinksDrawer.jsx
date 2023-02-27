@@ -11,7 +11,7 @@ const LinksDrawer = () => {
 
   return (
     <>
-      <IconButton onClick={handleDrawerToggle}>
+      <IconButton color="inherit" onClick={handleDrawerToggle}>
         <MenuIcon />
       </IconButton>
       <Drawer open={open} onClose={handleDrawerClose} />
