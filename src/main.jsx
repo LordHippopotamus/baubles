@@ -2,19 +2,48 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Root from 'routes/root';
-import Login from 'routes/login';
-import Editor from './routes/editor';
-import Profile from './routes/profile';
+import Root, { loader as rootLoader } from 'routes/root';
+import SignIn, { action as signInAction } from 'routes/signin';
+import SignUp, { action as signUpAction } from 'routes/signup';
+import { action as signOutAction } from 'routes/signout';
+import Profile, { loader as profileLoader, action as profileAction } from 'routes/profile';
+import Editor, { loader as editorLoader } from 'routes/editor';
+
+import { routes } from 'utils/routes';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    id: 'root',
+    path: routes.home,
     element: <Root />,
+    loader: rootLoader,
     children: [
-      { path: '/login', element: <Login /> },
-      { path: '/editor', element: <Editor /> },
-      { path: '/profile', element: <Profile /> },
+      {
+        path: routes.signin,
+        element: <SignIn />,
+        action: signInAction,
+      },
+      {
+        path: routes.signup,
+        element: <SignUp />,
+        action: signUpAction,
+      },
+      {
+        path: routes.signout,
+        action: signOutAction,
+      },
+      {
+        path: routes.profile,
+        element: <Profile />,
+        loader: profileLoader,
+        action: profileAction,
+      },
+      {
+        id: 'editor',
+        path: routes.editor,
+        element: <Editor />,
+        loader: editorLoader,
+      },
     ],
   },
 ]);
