@@ -7,7 +7,7 @@ import SignIn, { action as signInAction } from 'routes/signin';
 import SignUp, { action as signUpAction } from 'routes/signup';
 import { action as signOutAction } from 'routes/signout';
 import Profile, { loader as profileLoader, action as profileAction } from 'routes/profile';
-import Editor, { loader as editorLoader } from 'routes/editor';
+import Editor, { loader as editorLoader, action as editorAction } from 'routes/editor';
 
 import { routes } from 'utils/routes';
 
@@ -43,6 +43,7 @@ const router = createBrowserRouter([
         path: routes.editor,
         element: <Editor />,
         loader: editorLoader,
+        action: editorAction,
       },
     ],
   },
