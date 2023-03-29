@@ -27,7 +27,7 @@ const EditorProvider = ({ children }) => {
   useEffect(() => {
     if (bauble) {
       setArea(bauble.area);
-      setPalette(defaultPalette);
+      setPalette(bauble.palette);
     }
   }, [bauble]);
 
