@@ -19,7 +19,9 @@ const EditModal = ({ editModal, setEditModal }) => {
   const watchName = watch('name');
 
   const handleClose = () => {
-    setEditModal(null);
+    if (fetcher.state === 'idle') {
+      setEditModal(false);
+    }
   };
   useEffect(() => {
     setValue('name', editModal?.name);
