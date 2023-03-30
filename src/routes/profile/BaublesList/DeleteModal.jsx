@@ -21,8 +21,10 @@ const DeleteModal = ({ deleteModal, setDeleteModal }) => {
   const watchName = watch('name');
 
   const handleClose = () => {
-    reset();
-    setDeleteModal(null);
+    if (fetcher.state === 'idle') {
+      reset();
+      setDeleteModal(null);
+    }
   };
 
   useEffect(() => {
@@ -54,7 +56,9 @@ const DeleteModal = ({ deleteModal, setDeleteModal }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button disabled={fetcher.state !== 'idle'} onClick={handleClose}>
+            Close
+          </Button>
           <LoadingButton
             disabled={watchName.toLowerCase() !== deleteModal?.name.toLowerCase()}
             loading={fetcher.state !== 'idle'}

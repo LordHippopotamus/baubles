@@ -36,8 +36,10 @@ const CreateBaubleDialog = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    reset();
-    setOpen(false);
+    if (fetcher.state === 'idle') {
+      reset();
+      setOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +104,9 @@ const CreateBaubleDialog = () => {
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Close</Button>
+            <Button disabled={fetcher.state !== 'idle'} onClick={handleClose}>
+              Close
+            </Button>
             <LoadingButton
               loading={fetcher.state !== 'idle'}
               disabled={!!Object.keys(errors).length}

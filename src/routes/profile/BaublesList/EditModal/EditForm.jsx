@@ -28,7 +28,9 @@ const EditForm = ({ register, handleSubmit, errors, fetcher, handleClose, isButt
       />
     </DialogContent>
     <DialogActions>
-      <Button onClick={handleClose}>Close</Button>
+      <Button disabled={fetcher.state !== 'idle'} onClick={handleClose}>
+        Close
+      </Button>
       <LoadingButton disabled={isButtonDisabled} loading={fetcher.state !== 'idle'} type="submit">
         Change
       </LoadingButton>
