@@ -15,6 +15,7 @@ import {
   setDoc as firebaseSetDoc,
   deleteDoc as firebaseDeleteDoc,
   getFirestore,
+  collectionGroup,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -48,6 +49,16 @@ export const signUp = async (email, password) =>
 
 export const getDocs = async path => {
   const ref = collection.apply(this, [firestore, ...path]);
+  const docs = [];
+  const snapshot = await firebaseGetDocs(ref);
+  snapshot.forEach(doc => {
+    docs.push({ ...doc.data(), id: doc.id });
+  });
+  return docs;
+};
+
+export const getDocsInCollectionGroup = async collectionId => {
+  const ref = collectionGroup(firestore, collectionId);
   const docs = [];
   const snapshot = await firebaseGetDocs(ref);
   snapshot.forEach(doc => {
