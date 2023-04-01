@@ -15,7 +15,7 @@ const Account = () => {
   const handleClose = () => setAnchor(null);
 
   const handleSignOut = () => {
-    fetcher.submit({ idle: true }, { method: 'post', action: routes.signout });
+    fetcher.submit({ action: 'signOut' }, { method: 'post', action: routes.home });
     handleClose();
   };
 

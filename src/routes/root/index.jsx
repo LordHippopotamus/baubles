@@ -1,20 +1,50 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, redirect } from 'react-router-dom';
 import { getValidatedUser } from 'lib/firebase';
 import EditorProvider from 'context/editor';
 import MuiProvider from './MuiProvider';
 import Navigation from './Navigation';
-import { updateProfile } from 'lib/firebase/auth';
+import { signUp, signIn, updateProfile, signOut } from 'lib/firebase/auth';
+import { routes } from 'utils/routes';
 
 export const loader = async () => await getValidatedUser();
 
 export const action = async ({ request }) => {
-  if (request.method === 'PATCH') {
-    const formData = await request.formData();
-    const profile = JSON.parse(formData.get('profile'));
-    await updateProfile(profile);
+  const formData = await request.formData();
+  const action = formData.get('action');
+
+  if (action === 'signIn') {
+    try {
+      const email = formData.get('email');
+      const password = formData.get('password');
+      await signIn(email, password);
+      return redirect(routes.home);
+    } catch (error) {
+      return error.code;
+    }
   }
 
-  return 1;
+  if (action === 'signUp') {
+    try {
+      const email = formData.get('email');
+      const password = formData.get('password');
+      await signUp(email, password);
+      return redirect(routes.home);
+    } catch (error) {
+      return error.code;
+    }
+  }
+
+  if (action === 'updateProfile') {
+    const profile = JSON.parse(formData.get('profile'));
+    await updateProfile(profile);
+    return true;
+  }
+
+  if (action === 'signOut') {
+    await signOut();
+  }
+
+  return null;
 };
 
 const Root = () => (

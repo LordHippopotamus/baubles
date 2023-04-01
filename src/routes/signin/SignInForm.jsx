@@ -43,7 +43,7 @@ const SignInForm = () => {
   }, [fetcher.data, fetcher.state]);
 
   const onSubmit = ({ email, password }) => {
-    fetcher.submit({ email, password }, { method: 'post', action: routes.signin });
+    fetcher.submit({ email, password, action: 'signIn' }, { method: 'post', action: routes.home });
   };
 
   return (

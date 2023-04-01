@@ -18,8 +18,8 @@ const EditDisplayName = ({ handleCancelEditing }) => {
     if (displayName === user.displayName) return;
 
     fetcher.submit(
-      { profile: JSON.stringify({ displayName }) },
-      { method: 'patch', action: routes.home }
+      { profile: JSON.stringify({ displayName }), action: 'updateProfile' },
+      { method: 'post', action: routes.home }
     );
   };
 

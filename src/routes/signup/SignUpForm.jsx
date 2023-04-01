@@ -38,7 +38,7 @@ const SignUpForm = () => {
   const onSubmit = ({ email, password, passwordRepeat }) => {
     if (password !== passwordRepeat)
       return setError('passwordRepeat', { message: "Passwords don't match" });
-    fetcher.submit({ email, password }, { method: 'post', action: routes.signup });
+    fetcher.submit({ email, password, action: 'signUp' }, { method: 'post', action: routes.home });
   };
 
   return (
