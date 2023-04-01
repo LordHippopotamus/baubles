@@ -5,6 +5,7 @@ import { routes } from 'utils/routes';
 import { generateArea } from 'utils/generateArea';
 import BaublesList from './BaublesList';
 import CreateBaubleDialog from './CreateBaubleDialog';
+import { generatePalette } from 'utils/generatePalette';
 
 export const loader = async () => {
   const user = await await getValidatedUser();
@@ -23,6 +24,7 @@ export const action = async ({ request }) => {
     (await addDoc(['users', user.uid, 'baubles'], {
       name: formData.get('name'),
       area: generateArea(formData.get('columns'), formData.get('rows')),
+      palette: generatePalette(),
     }));
 
   request.method === 'PATCH' &&
