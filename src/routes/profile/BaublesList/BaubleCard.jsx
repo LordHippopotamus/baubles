@@ -4,13 +4,7 @@ import { Link } from 'react-router-dom';
 import { routes } from 'utils/routes';
 
 const BaubleCard = ({ id, owner, setEditModal, setDeleteModal, children }) => (
-  <Card
-    sx={{
-      position: 'relative',
-      mt: 2,
-    }}
-    component="div"
-  >
+  <Card sx={{ position: 'relative' }} component="div">
     <Box zIndex={1} position="absolute" display="flex" gap={1} right={0} mr={2} mt={2}>
       <IconButton onClick={() => setEditModal({ id, name: children })} size="large" color="primary">
         <Edit />

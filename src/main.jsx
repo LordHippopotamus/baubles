@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import Root, { loader as rootLoader } from 'routes/root';
+import Root, { loader as rootLoader, action as rootAction } from 'routes/root';
 import Home, { loader as homeLoader } from 'routes/home';
 import SignIn, { action as signInAction } from 'routes/signin';
 import SignUp, { action as signUpAction } from 'routes/signup';
@@ -18,6 +18,7 @@ const router = createBrowserRouter([
     path: routes.home,
     element: <Root />,
     loader: rootLoader,
+    action: rootAction,
     children: [
       {
         index: true,

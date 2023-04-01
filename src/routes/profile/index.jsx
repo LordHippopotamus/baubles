@@ -3,9 +3,10 @@ import { getValidatedUser, getDocs, addDoc, setDoc, deleteDoc } from 'lib/fireba
 import { redirect, useLoaderData } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import { generateArea } from 'utils/generateArea';
+import { generatePalette } from 'utils/generatePalette';
 import BaublesList from './BaublesList';
 import CreateBaubleDialog from './CreateBaubleDialog';
-import { generatePalette } from 'utils/generatePalette';
+import DisplayName from './DisplayName';
 
 export const loader = async () => {
   const user = await await getValidatedUser();
@@ -42,7 +43,8 @@ const Profile = () => {
   const baubles = useLoaderData();
 
   return (
-    <Container>
+    <Container sx={{ my: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <DisplayName />
       <CreateBaubleDialog />
       <BaublesList baubles={baubles} />
     </Container>

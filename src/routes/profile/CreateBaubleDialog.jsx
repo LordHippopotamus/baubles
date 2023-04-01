@@ -56,7 +56,7 @@ const CreateBaubleDialog = () => {
         disabled={user === undefined}
         onClick={handleOpen}
         variant="outlined"
-        sx={{ width: 1, mt: 4, height: '8rem' }}
+        sx={{ width: 1, height: '8rem' }}
       >
         <Add />
       </Button>
