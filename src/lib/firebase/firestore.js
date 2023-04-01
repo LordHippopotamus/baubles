@@ -1,11 +1,3 @@
-import { initializeApp } from 'firebase/app';
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut as firebaseSignOut,
-} from 'firebase/auth';
 import {
   collection,
   doc,
@@ -18,34 +10,9 @@ import {
   collectionGroup,
 } from 'firebase/firestore';
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY,
-  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID,
-};
+import { app } from './app';
 
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
 export const firestore = getFirestore(app);
-
-// TODO: move variables in different files
-
-export const getValidatedUser = () =>
-  new Promise(resolve => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      unsubscribe();
-      resolve(user);
-    });
-  });
-
-export const signOut = async () => await firebaseSignOut(auth);
-export const signIn = async (email, password) =>
-  await signInWithEmailAndPassword(auth, email, password);
-export const signUp = async (email, password) =>
-  await createUserWithEmailAndPassword(auth, email, password);
 
 export const getDocs = async path => {
   const ref = collection.apply(this, [firestore, ...path]);
