@@ -42,6 +42,7 @@ export const action = async ({ request }) => {
 
   if (action === 'signOut') {
     await signOut();
+    return true;
   }
 
   return null;

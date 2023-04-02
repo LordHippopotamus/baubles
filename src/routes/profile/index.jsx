@@ -9,32 +9,32 @@ import CreateBaubleDialog from './CreateBaubleDialog';
 import DisplayName from './DisplayName';
 
 export const loader = async () => {
-  const user = await await getValidatedUser();
+  const user = await getValidatedUser();
   if (!user) return redirect(routes.signin);
 
-  const baubles = await getDocs(['users', user.uid, 'baubles']);
+  const baubles = await getDocs(['baubles']);
 
-  return baubles.map(el => ({ ...el, owner: user.uid }));
+  return baubles;
 };
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
-  const user = await await getValidatedUser();
+  const user = await getValidatedUser();
 
   request.method === 'POST' &&
-    (await addDoc(['users', user.uid, 'baubles'], {
+    (await addDoc(['baubles'], {
       name: formData.get('name'),
       area: generateArea(formData.get('columns'), formData.get('rows')),
       palette: generatePalette(),
+      owner: user.uid,
     }));
 
   request.method === 'PATCH' &&
-    (await setDoc(['users', user.uid, 'baubles', formData.get('baubleId')], {
+    (await setDoc(['baubles', formData.get('baubleId')], {
       name: formData.get('name'),
     }));
 
-  request.method === 'DELETE' &&
-    (await deleteDoc(['users', user.uid, 'baubles', formData.get('id')]));
+  request.method === 'DELETE' && (await deleteDoc(['baubles', formData.get('id')]));
 
   return 1;
 };

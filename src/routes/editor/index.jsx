@@ -9,10 +9,9 @@ export const action = async ({ request }) => {
     const formData = await request.formData();
     const area = JSON.parse(formData.get('area'));
     const palette = JSON.parse(formData.get('palette'));
-    const owner = formData.get('owner');
     const bauble = formData.get('bauble');
 
-    await setDoc(['users', owner, 'baubles', bauble], { area, palette });
+    await setDoc(['baubles', bauble], { area, palette });
 
     return 1;
   }
@@ -20,14 +19,12 @@ export const action = async ({ request }) => {
 
 export const loader = async ({ request }) => {
   const url = new URL(request.url);
-  const ownerId = url.searchParams.get('owner');
   const baubleId = url.searchParams.get('bauble');
   const currentUser = await getValidatedUser();
 
-  if (ownerId !== currentUser.uid) return redirect('/error');
-
   try {
-    const bauble = await getDoc(['users', ownerId, 'baubles', baubleId]);
+    const bauble = await getDoc(['baubles', baubleId]);
+    if (bauble.owner !== currentUser.uid) return redirect('/error');
     return bauble;
   } catch (error) {
     if (error.message === 'does-not-exist') return redirect('/error');

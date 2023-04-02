@@ -1,9 +1,9 @@
 import { Container, Card, CardActionArea, CardContent, Typography, Grid } from '@mui/material';
-import { getDocsInCollectionGroup } from 'lib/firebase';
+import { getDocs } from 'lib/firebase';
 import { useLoaderData } from 'react-router-dom';
 
 export const loader = async () => {
-  return await getDocsInCollectionGroup('baubles');
+  return await getDocs(['baubles']);
 };
 
 const Home = () => {

@@ -22,7 +22,6 @@ const Drawer = ({ open, handleClose }) => {
       {
         area: JSON.stringify(area),
         palette: JSON.stringify(palette),
-        owner: searchParams.get('owner'),
         bauble: searchParams.get('bauble'),
       },
       { method: 'put', action: routes.editor }

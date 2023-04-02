@@ -16,12 +16,7 @@ const BaublesList = () => {
       <Grid container spacing={2}>
         {baubles.map(bauble => (
           <Grid item xs={12} key={bauble.id}>
-            <BaubleCard
-              id={bauble.id}
-              owner={bauble.owner}
-              setEditModal={setEditModal}
-              setDeleteModal={setDeleteModal}
-            >
+            <BaubleCard id={bauble.id} setEditModal={setEditModal} setDeleteModal={setDeleteModal}>
               {bauble.name}
             </BaubleCard>
           </Grid>
