@@ -12,7 +12,7 @@ const Menu = ({ anchor, handleClose }) => {
   };
 
   useEffect(() => {
-    fetcher.state === 'idle' && fetcher.data && handleClose();
+    fetcher.state !== 'submitting' && fetcher.data && handleClose();
   }, [fetcher.state, fetcher.data]);
 
   return (
@@ -31,7 +31,12 @@ const Menu = ({ anchor, handleClose }) => {
     >
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={handleClose} component={Link} to={routes.profile} disabled={loading}>
+          <ListItemButton
+            onClick={handleClose}
+            component={Link}
+            to={routes.profile}
+            disabled={loading}
+          >
             Profile
           </ListItemButton>
         </ListItem>
