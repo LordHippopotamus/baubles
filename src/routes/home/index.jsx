@@ -1,10 +1,10 @@
 import { Container, Card, CardActionArea, CardContent, Typography, Grid } from '@mui/material';
+import { limit, orderBy } from 'firebase/firestore';
 import { getDocs } from 'lib/firebase';
 import { useLoaderData } from 'react-router-dom';
 
-export const loader = async () => {
-  return await getDocs(['baubles']);
-};
+export const loader = async () =>
+  await getDocs(['baubles'], [orderBy('createdAt', 'desc'), limit(10)]);
 
 const Home = () => {
   const baubles = useLoaderData();

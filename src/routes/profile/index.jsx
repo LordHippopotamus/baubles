@@ -1,5 +1,6 @@
 import { Container } from '@mui/material';
 import { getValidatedUser, getDocs, addDoc, setDoc, deleteDoc } from 'lib/firebase';
+import { limit, orderBy, serverTimestamp, where } from 'firebase/firestore';
 import { redirect, useLoaderData } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import { generateArea } from 'utils/generateArea';
@@ -12,9 +13,10 @@ export const loader = async () => {
   const user = await getValidatedUser();
   if (!user) return redirect(routes.signin);
 
-  const baubles = await getDocs(['baubles']);
-
-  return baubles;
+  return await getDocs(
+    ['baubles'],
+    [where('owner', '==', user.uid), orderBy('createdAt', 'desc'), limit(10)]
+  );
 };
 
 export const action = async ({ request }) => {
@@ -27,6 +29,7 @@ export const action = async ({ request }) => {
       area: generateArea(formData.get('columns'), formData.get('rows')),
       palette: generatePalette(),
       owner: user.uid,
+      createdAt: serverTimestamp(),
     }));
 
   request.method === 'PATCH' &&
