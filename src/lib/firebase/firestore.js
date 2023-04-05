@@ -8,6 +8,7 @@ import {
   deleteDoc as firebaseDeleteDoc,
   getFirestore,
   query,
+  getCountFromServer,
 } from 'firebase/firestore';
 
 import { app } from './app';
@@ -29,6 +30,16 @@ export const getDoc = async (path, options = []) => {
   const snapshot = await firebaseGetDoc(ref);
   if (snapshot.exists()) return snapshot.data();
   throw new Error('does-not-exist');
+};
+
+export const getSnap = async path => {
+  const ref = doc(firestore, ...path);
+  return await firebaseGetDoc(ref);
+};
+
+export const getDocsCount = async path => {
+  const snapshot = await getCountFromServer(collection(firestore, ...path));
+  return snapshot.data().count;
 };
 
 export const addDoc = async (path, newDoc) =>

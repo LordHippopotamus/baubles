@@ -1,29 +1,22 @@
-import { Container, Card, CardActionArea, CardContent, Typography, Grid } from '@mui/material';
 import { limit, orderBy } from 'firebase/firestore';
 import { getDocs } from 'lib/firebase';
 import { useLoaderData } from 'react-router-dom';
+import InfiniteList from 'components/InfiniteList';
+import { Container } from '@mui/material';
 
 export const loader = async () =>
   await getDocs(['baubles'], [orderBy('createdAt', 'desc'), limit(10)]);
 
 const Home = () => {
-  const baubles = useLoaderData();
+  const loaderData = useLoaderData();
 
   return (
     <Container sx={{ my: 4 }}>
-      <Grid container spacing={2}>
-        {baubles.map(bauble => (
-          <Grid item xs={12} md={6} key={bauble.id}>
-            <Card>
-              <CardActionArea>
-                <CardContent>
-                  <Typography variant="h5">{bauble.name}</Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+      <InfiniteList
+        path={['baubles']}
+        options={[orderBy('createdAt', 'desc'), limit(10)]}
+        initialData={loaderData}
+      />
     </Container>
   );
 };
