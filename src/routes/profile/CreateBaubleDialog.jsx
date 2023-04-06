@@ -11,13 +11,14 @@ import { Add } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { useForm } from 'react-hook-form';
-import { useFetcher } from 'react-router-dom';
+import { useFetcher, useLocation } from 'react-router-dom';
 import { useUser } from 'hooks/user';
 import { routes } from 'utils/routes';
 
 const CreateBaubleDialog = () => {
   const user = useUser();
   const fetcher = useFetcher();
+  const location = useLocation();
 
   const {
     register,
@@ -41,6 +42,10 @@ const CreateBaubleDialog = () => {
       setOpen(false);
     }
   };
+
+  useEffect(() => {
+    location.state?.createNewBauble && handleOpen();
+  }, [location.state]);
 
   useEffect(() => {
     fetcher.state === 'idle' && fetcher.data && handleClose();
