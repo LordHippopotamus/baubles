@@ -6,7 +6,7 @@ import { routes } from 'utils/routes';
 import { generateArea } from 'utils/generateArea';
 import { generatePalette } from 'utils/generatePalette';
 import BaublesList from './BaublesList';
-import CreateBaubleDialog from './CreateBaubleDialog';
+import CreateBauble from './CreateBauble';
 import DisplayName from './DisplayName';
 
 export const loader = async () => {
@@ -48,7 +48,7 @@ const Profile = () => {
   return (
     <Container sx={{ my: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <DisplayName />
-      <CreateBaubleDialog />
+      <CreateBauble />
       <BaublesList baubles={baubles} />
     </Container>
   );
