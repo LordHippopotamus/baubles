@@ -8,6 +8,7 @@ import SignIn from 'routes/signin';
 import SignUp from 'routes/signup';
 import Profile, { loader as profileLoader, action as profileAction } from 'routes/profile';
 import Editor, { loader as editorLoader, action as editorAction } from 'routes/editor';
+import BaubleDetails, { loader as baubleDetailsLoader } from 'routes/baubleDetails';
 
 import { routes } from 'utils/routes';
 
@@ -44,6 +45,11 @@ const router = createBrowserRouter([
         element: <Editor />,
         loader: editorLoader,
         action: editorAction,
+      },
+      {
+        path: routes.baubles.details + ':baubleId',
+        element: <BaubleDetails />,
+        loader: baubleDetailsLoader,
       },
     ],
   },
