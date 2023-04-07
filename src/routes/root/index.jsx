@@ -1,10 +1,9 @@
-import { Outlet, redirect } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { getValidatedUser } from 'lib/firebase';
 import EditorProvider from 'context/editor';
 import MuiProvider from './MuiProvider';
 import Navigation from './Navigation';
 import { signUp, signIn, updateProfile, signOut } from 'lib/firebase/auth';
-import { routes } from 'utils/routes';
 
 export const loader = async () => await getValidatedUser();
 
@@ -17,7 +16,8 @@ export const action = async ({ request }) => {
       const email = formData.get('email');
       const password = formData.get('password');
       await signIn(email, password);
-      return redirect(routes.home);
+      history.back();
+      return null;
     } catch (error) {
       return error.code;
     }
@@ -28,7 +28,8 @@ export const action = async ({ request }) => {
       const email = formData.get('email');
       const password = formData.get('password');
       await signUp(email, password);
-      return redirect(routes.home);
+      history.back();
+      return null;
     } catch (error) {
       return error.code;
     }
