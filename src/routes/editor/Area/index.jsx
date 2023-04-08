@@ -12,7 +12,7 @@ const Area = () => {
     <Box
       onWheel={tool === 'pan' && handleScale}
       onMouseMove={tool === 'pan' && handleTranslate}
-      height="calc(100vh - 64px)"
+      height={{ xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' }}
       overflow="hidden"
     >
       <Canvas scale={scale} translate={translate} />
