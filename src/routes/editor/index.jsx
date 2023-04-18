@@ -3,6 +3,7 @@ import { redirect } from 'react-router-dom';
 import Palette from './Palette';
 import Area from './Area';
 import { setDoc } from 'lib/firebase';
+import { Box } from '@mui/material';
 
 export const action = async ({ request }) => {
   if (request.method === 'PUT') {
@@ -33,10 +34,14 @@ export const loader = async ({ request }) => {
 };
 
 const Editor = () => (
-  <>
+  <Box
+    height={{ xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' }}
+    display="flex"
+    flexDirection="column"
+  >
     <Area />
     <Palette />
-  </>
+  </Box>
 );
 
 export default Editor;

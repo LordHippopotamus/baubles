@@ -1,7 +1,7 @@
 import { useSelectedTool, useSelectedColor, useDraw, useArea } from 'hooks/editor';
 import Rect from './Rect';
 
-const Canvas = ({ scale, translate }) => {
+const Canvas = () => {
   const area = useArea();
   const tool = useSelectedTool();
   const draw = useDraw();
@@ -16,17 +16,7 @@ const Canvas = ({ scale, translate }) => {
   };
 
   return (
-    <svg
-      onMouseMove={handleMove}
-      width="100%"
-      height="100%"
-      viewBox={`0 0 1200 6000`}
-      style={{
-        transform: `scale(${scale})
-                      translate(${translate.x / scale}px, ${translate.y / scale}px)`,
-        transformOrigin: '0px 0px',
-      }}
-    >
+    <svg onMouseMove={handleMove} width="100%" height="100%" viewBox={`0 0 1200 6000`}>
       {area.map(el => (
         <Rect key={el.x + ';' + el.y} {...el} />
       ))}
