@@ -1,7 +1,7 @@
 import { useSelectedTool, useSelectedColor, useDraw, useArea } from 'hooks/editor';
-import Rect from './Rect';
+import Preview from 'components/Preview';
 
-const Canvas = () => {
+const Area = () => {
   const area = useArea();
   const tool = useSelectedTool();
   const draw = useDraw();
@@ -15,13 +15,20 @@ const Canvas = () => {
     }
   };
 
+  const handleClick = event => {
+    const [x, y] = event.target.id.split(';');
+    if (tool === 'brush') draw(+x, +y, selectedColor);
+    if (tool === 'eraser') draw(+x, +y, null);
+  };
+
   return (
-    <svg onMouseMove={handleMove} width="100%" height="100%" viewBox={`0 0 1200 6000`}>
-      {area.map(el => (
-        <Rect key={el.x + ';' + el.y} {...el} />
-      ))}
-    </svg>
+    <Preview
+      area={area}
+      wrapperProps={{ disabled: tool !== 'pan' }}
+      svgProps={{ onMouseMove: handleMove }}
+      rectProps={{ onClick: handleClick }}
+    />
   );
 };
 
-export default Canvas;
+export default Area;

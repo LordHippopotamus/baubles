@@ -2,7 +2,7 @@ import { useLoaderData } from 'react-router-dom';
 import { Box, Container, Divider } from '@mui/material';
 import { getDoc } from 'lib/firebase';
 import BaubleInfo from './BaubleInfo';
-import Preview from './Preview';
+import Preview from 'components/Preview';
 
 export const loader = async ({ params }) => {
   const bauble = await getDoc(['baubles', params.baubleId]);
