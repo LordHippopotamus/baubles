@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { getValidatedUser } from 'lib/firebase';
 import EditorProvider from 'context/editor';
+import ColorModeProvider from 'context/colorMode';
 import MuiProvider from './MuiProvider';
 import Navigation from './Navigation';
 import { signUp, signIn, updateProfile, signOut } from 'lib/firebase/auth';
@@ -50,12 +51,14 @@ export const action = async ({ request }) => {
 };
 
 const Root = () => (
-  <MuiProvider>
-    <EditorProvider>
-      <Navigation />
-      <Outlet />
-    </EditorProvider>
-  </MuiProvider>
+  <ColorModeProvider>
+    <MuiProvider>
+      <EditorProvider>
+        <Navigation />
+        <Outlet />
+      </EditorProvider>
+    </MuiProvider>
+  </ColorModeProvider>
 );
 
 export default Root;
