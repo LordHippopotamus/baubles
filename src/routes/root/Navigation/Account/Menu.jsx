@@ -2,8 +2,10 @@ import { CircularProgress, List, ListItem, ListItemButton, Popover } from '@mui/
 import { useEffect } from 'react';
 import { Link, useFetcher } from 'react-router-dom';
 import { routes } from 'utils/routes';
+import { useUser } from 'hooks/user';
 
 const Menu = ({ anchor, handleClose }) => {
+  const user = useUser();
   const fetcher = useFetcher();
   const loading = fetcher.state !== 'idle';
 
@@ -34,7 +36,7 @@ const Menu = ({ anchor, handleClose }) => {
           <ListItemButton
             onClick={handleClose}
             component={Link}
-            to={routes.profile}
+            to={`/users/${user.uid}`}
             disabled={loading}
           >
             Profile

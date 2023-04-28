@@ -28,7 +28,10 @@ const EditModal = ({ editModal, setEditModal }) => {
   }, [editModal]);
 
   const onSubmit = async ({ name }) => {
-    fetcher.submit({ name, baubleId: editModal?.id }, { method: 'patch', action: routes.profile });
+    fetcher.submit(
+      { name, baubleId: editModal?.id },
+      { method: 'patch', action: `/users/${user.uid}` }
+    );
   };
 
   useEffect(() => {

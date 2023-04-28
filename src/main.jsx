@@ -6,7 +6,10 @@ import Root, { loader as rootLoader, action as rootAction } from 'routes/root';
 import Home, { loader as homeLoader } from 'routes/home';
 import SignIn from 'routes/signin';
 import SignUp from 'routes/signup';
-import Profile, { loader as profileLoader, action as profileAction } from 'routes/profile';
+import UserDetails, {
+  loader as userDetailsLoader,
+  action as userDetailsAction,
+} from 'routes/userDetails';
 import Editor, { loader as editorLoader, action as editorAction } from 'routes/editor';
 import BaubleDetails, { loader as baubleDetailsLoader } from 'routes/baubleDetails';
 
@@ -34,10 +37,10 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path: routes.profile,
-        element: <Profile />,
-        loader: profileLoader,
-        action: profileAction,
+        path: 'users/:uid',
+        element: <UserDetails />,
+        loader: userDetailsLoader,
+        action: userDetailsAction,
       },
       {
         id: 'editor',

@@ -1,22 +1,27 @@
 import { Container } from '@mui/material';
 import { getValidatedUser, getDocs, addDoc, setDoc, deleteDoc } from 'lib/firebase';
 import { limit, orderBy, serverTimestamp, where } from 'firebase/firestore';
-import { redirect, useLoaderData } from 'react-router-dom';
-import { routes } from 'utils/routes';
+import { useLoaderData } from 'react-router-dom';
 import { generateArea } from 'utils/generateArea';
 import { generatePalette } from 'utils/generatePalette';
 import BaublesList from './BaublesList';
 import CreateBauble from './CreateBauble';
-import DisplayName from './DisplayName';
+import UserInfo from './UserInfo';
+import { getDoc } from 'lib/firebase/firestore';
 
-export const loader = async () => {
-  const user = await getValidatedUser();
-  if (!user) return redirect(routes.signin);
+export const loader = async ({ params }) => {
+  const validateUser = await getValidatedUser();
+  try {
+    const user = await getDoc(['users', params.uid]);
+    const baubles = await getDocs(
+      ['baubles'],
+      [where('owner', '==', params.uid), orderBy('createdAt', 'desc'), limit(10)]
+    );
 
-  return await getDocs(
-    ['baubles'],
-    [where('owner', '==', user.uid), orderBy('createdAt', 'desc'), limit(10)]
-  );
+    return { user, baubles, isOwner: validateUser.uid === user.uid };
+  } catch (error) {
+    if (error.message === 'does-not-exist') throw new Response('User Not Found', { status: 404 });
+  }
 };
 
 export const action = async ({ request }) => {
@@ -42,16 +47,16 @@ export const action = async ({ request }) => {
   return 1;
 };
 
-const Profile = () => {
-  const baubles = useLoaderData();
+const UserDetails = () => {
+  const { user, baubles, isOwner } = useLoaderData();
 
   return (
     <Container sx={{ my: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <DisplayName />
-      <CreateBauble />
+      <UserInfo user={user} />
+      {isOwner && <CreateBauble />}
       <BaublesList baubles={baubles} />
     </Container>
   );
 };
 
-export default Profile;
+export default UserDetails;

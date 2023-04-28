@@ -12,10 +12,11 @@ import {
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFetcher } from 'react-router-dom';
-import { routes } from 'utils/routes';
+import { useUser } from 'hooks/user';
 
 const DeleteModal = ({ deleteModal, setDeleteModal }) => {
   const fetcher = useFetcher();
+  const user = useUser();
 
   const { register, watch, handleSubmit, reset } = useForm({ defaultValues: { name: '' } });
   const watchName = watch('name');
@@ -32,7 +33,7 @@ const DeleteModal = ({ deleteModal, setDeleteModal }) => {
   }, [fetcher.state, fetcher.data]);
 
   const onSubmit = async () => {
-    fetcher.submit({ id: deleteModal.id }, { method: 'delete', action: routes.profile });
+    fetcher.submit({ id: deleteModal.id }, { method: 'delete', action: `/users/${user.uid}` });
   };
 
   return (

@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import BaubleCard from './BaubleCard';
 import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
 import { Grid } from '@mui/material';
 
-const BaublesList = () => {
-  const baubles = useLoaderData();
-
+const BaublesList = ({ baubles }) => {
   const [editModal, setEditModal] = useState(null);
   const [deleteModal, setDeleteModal] = useState(null);
 

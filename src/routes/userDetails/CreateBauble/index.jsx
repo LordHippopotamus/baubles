@@ -2,11 +2,12 @@ import { Dialog } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFetcher, useLocation } from 'react-router-dom';
-import { routes } from 'utils/routes';
+import { useUser } from 'hooks/user';
 import Form from './Form';
 import ToggleButton from './ToggleButton';
 
 const CreateBaubleDialog = () => {
+  const user = useUser();
   const fetcher = useFetcher();
   const location = useLocation();
 
@@ -42,7 +43,7 @@ const CreateBaubleDialog = () => {
   }, [fetcher.state]);
 
   const handleCreate = async ({ name, columns, rows }) => {
-    fetcher.submit({ name, columns, rows }, { method: 'post', action: routes.profile });
+    fetcher.submit({ name, columns, rows }, { method: 'post', action: `/users/${user.uid}` });
   };
 
   return (
