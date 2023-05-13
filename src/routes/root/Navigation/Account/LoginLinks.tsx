@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from 'utils/routes';
 
-const LoginLinks = () => (
+const LoginLinks: FC = () => (
   <div>
     <Button component={Link} to={routes.signin} color="inherit">
       Sign In

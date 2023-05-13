@@ -1,11 +1,22 @@
 import { Dialog } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { FC, useEffect } from 'react';
 import { useFetcher } from 'react-router-dom';
-import { routes } from 'utils/routes';
 import EditForm from './EditForm';
+import { Modal } from '..';
+import { useUser } from 'hooks/user';
 
-const EditModal = ({ editModal, setEditModal }) => {
+type Props = {
+  editModal: Modal | null;
+  onClose: () => void;
+};
+
+export type FormValues = {
+  name: string;
+};
+
+const EditModal: FC<Props> = ({ editModal, onClose }) => {
+  const user = useUser();
   const fetcher = useFetcher();
 
   const {
@@ -14,43 +25,37 @@ const EditModal = ({ editModal, setEditModal }) => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const watchName = watch('name');
 
-  const handleClose = () => {
-    if (fetcher.state === 'idle') {
-      setEditModal(false);
-    }
-  };
   useEffect(() => {
-    setValue('name', editModal?.name);
+    editModal && setValue('name', editModal.name);
   }, [editModal]);
 
-  const onSubmit = async ({ name }) => {
-    fetcher.submit(
-      { name, baubleId: editModal?.id },
-      { method: 'patch', action: `/users/${user.uid}` }
-    );
+  const onSubmit: SubmitHandler<FormValues> = async ({ name }) => {
+    editModal &&
+      fetcher.submit(
+        { name, baubleId: editModal.id },
+        { method: 'patch', action: `/users/${user.uid}` }
+      );
   };
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
       fetcher.data = undefined;
-      handleClose();
+      onClose();
     }
   }, [fetcher.state, fetcher.data]);
 
   return (
-    <Dialog open={!!editModal} onClose={handleClose}>
+    <Dialog open={!!editModal} onClose={onClose}>
       <EditForm
         register={register}
-        handleSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         errors={errors}
         fetcher={fetcher}
-        handleClose={handleClose}
-        editModal={editModal}
-        setValue={setValue}
+        onClose={onClose}
         isButtonDisabled={watchName === editModal?.name}
       />
     </Dialog>

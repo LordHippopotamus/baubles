@@ -1,12 +1,18 @@
 import { Dialog } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useEffect, useState, FC } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useFetcher, useLocation } from 'react-router-dom';
 import { useUser } from 'hooks/user';
 import Form from './Form';
 import ToggleButton from './ToggleButton';
 
-const CreateBaubleDialog = () => {
+export type FormValues = {
+  name: string;
+  columns: number;
+  rows: number;
+};
+
+const CreateBaubleDialog: FC = () => {
   const user = useUser();
   const fetcher = useFetcher();
   const location = useLocation();
@@ -16,7 +22,7 @@ const CreateBaubleDialog = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: {
       name: 'A Great Thing',
       columns: 12,
@@ -42,8 +48,11 @@ const CreateBaubleDialog = () => {
     fetcher.state === 'idle' && fetcher.data && handleClose();
   }, [fetcher.state]);
 
-  const handleCreate = async ({ name, columns, rows }) => {
-    fetcher.submit({ name, columns, rows }, { method: 'post', action: `/users/${user.uid}` });
+  const handleCreate: SubmitHandler<FormValues> = async ({ name, columns, rows }) => {
+    fetcher.submit(
+      { name, columns: columns.toString(), rows: rows.toString() },
+      { method: 'post', action: `/users/${user.uid}` }
+    );
   };
 
   return (

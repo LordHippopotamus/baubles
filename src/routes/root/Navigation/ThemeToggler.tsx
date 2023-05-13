@@ -1,8 +1,9 @@
 import { IconButton } from '@mui/material';
 import { Brightness4, Brightness7, BrightnessAuto } from '@mui/icons-material';
 import { useColorMode } from 'hooks/colorMode';
+import { FC } from 'react';
 
-const ThemeToggler = () => {
+const ThemeToggler: FC = () => {
   const [colorMode, setColorMode] = useColorMode();
 
   const changeColorMode = () => {

@@ -1,8 +1,13 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
+import { FC } from 'react';
 
-const ToggleButton = props => (
-  <Button variant="outlined" sx={{ width: 1, height: '8rem' }} {...props}>
+type Props = {
+  onClick: () => void;
+};
+
+const ToggleButton: FC<Props> = ({ onClick }) => (
+  <Button variant="outlined" sx={{ width: 1, height: '8rem' }} onClick={onClick}>
     <Add />
   </Button>
 );

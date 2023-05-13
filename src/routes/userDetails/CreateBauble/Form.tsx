@@ -7,8 +7,19 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
+import { FormState, UseFormRegister } from 'react-hook-form';
+import { FormValues } from '.';
+import { FC } from 'react';
 
-const Form = ({ onSubmit, onClose, register, errors, isLoading }) => (
+type Props = {
+  onSubmit: () => void;
+  onClose: () => void;
+  register: UseFormRegister<FormValues>;
+  errors: FormState<FormValues>['errors'];
+  isLoading: boolean;
+};
+
+const Form: FC<Props> = ({ onSubmit, onClose, register, errors, isLoading }) => (
   <form onSubmit={onSubmit}>
     <DialogTitle>Create new bauble</DialogTitle>
     <DialogContent sx={{ display: 'flex', flexDirection: 'column' }}>

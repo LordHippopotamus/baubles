@@ -1,9 +1,17 @@
-import { createContext, useState } from 'react';
+import { FC, ReactNode, Dispatch, SetStateAction, createContext, useState } from 'react';
 
-export const ColorModeContext = createContext();
+type ColorMode = 'auto' | 'dark' | 'light';
 
-const ColorModeProvider = ({ children }) => {
-  const [colorMode, setColorMode] = useState('auto');
+type ColorModeContext = [ColorMode, Dispatch<SetStateAction<ColorMode>>];
+
+type Props = {
+  children: ReactNode;
+};
+
+export const ColorModeContext = createContext<ColorModeContext>(['auto', () => undefined]);
+
+const ColorModeProvider: FC<Props> = ({ children }) => {
+  const [colorMode, setColorMode] = useState<ColorMode>('auto');
 
   return (
     <ColorModeContext.Provider value={[colorMode, setColorMode]}>

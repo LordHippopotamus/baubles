@@ -1,4 +1,6 @@
-export const generateArea = (columns, rows) => {
+import { Area } from 'types';
+
+export const generateArea = (columns: number, rows: number): Area => {
   const area = [];
 
   for (let x = 0; x < columns; x++) {

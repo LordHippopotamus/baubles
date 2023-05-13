@@ -1,37 +1,46 @@
 import { Menu, MenuItem } from '@mui/material';
 import { useSelectColor, usePickColor } from 'hooks/editor';
+import { FC, MouseEventHandler, MouseEvent } from 'react';
+import { Anchor } from '.';
+import { Color } from 'types';
 
-const ContextMenu = ({ anchor, handleClose, handleColorModal }) => {
+type Props = {
+  anchor: Anchor | null;
+  onClose: MouseEventHandler;
+  onEditColor: MouseEventHandler;
+};
+
+const ContextMenu: FC<Props> = ({ anchor, onClose, onEditColor }) => {
   const selectColor = useSelectColor();
   const pickColor = usePickColor();
 
   return (
     <Menu
       open={anchor !== null}
-      onClose={handleClose}
+      onClose={onClose}
       anchorReference="anchorPosition"
       anchorPosition={anchor !== null ? { top: anchor.mouseY, left: anchor.mouseX } : undefined}
     >
       <MenuItem
-        onClick={() => {
-          selectColor(anchor.colorId);
-          handleClose();
+        onClick={(event: MouseEvent) => {
+          selectColor(anchor?.colorId as Color['id']); // anchor can't be null there
+          onClose(event);
         }}
       >
         Select
       </MenuItem>
       <MenuItem
-        onClick={() => {
-          handleColorModal(anchor.colorId);
-          handleClose();
+        onClick={(event: MouseEvent) => {
+          onEditColor(event);
+          onClose(event);
         }}
       >
         Edit
       </MenuItem>
       <MenuItem
-        onClick={() => {
-          pickColor(anchor.colorId, null);
-          handleClose();
+        onClick={(event: MouseEvent) => {
+          pickColor(anchor?.colorId as Color['id'], null); // anchor can't be null there
+          onClose(event);
         }}
       >
         Delete

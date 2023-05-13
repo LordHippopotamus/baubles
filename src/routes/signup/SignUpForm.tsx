@@ -3,7 +3,14 @@ import { Link as RouterLink, useFetcher } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import { Form, EmailInput, PasswordInput, ErrorAlert, SubmitButton } from 'components/form';
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+type FormValues = {
+  email: string;
+  password: string;
+  passwordRepeat: string;
+  alert: null;
+};
 
 const SignUpForm = () => {
   const fetcher = useFetcher();
@@ -14,7 +21,7 @@ const SignUpForm = () => {
     clearErrors,
     handleSubmit,
     setError,
-  } = useForm();
+  } = useForm<FormValues>();
 
   useEffect(() => {
     if (fetcher.data && fetcher.state === 'idle') {
@@ -29,13 +36,13 @@ const SignUpForm = () => {
           setError('email', { message: 'Email is already in use' });
           break;
         default:
-          setError('alert', { message: 'Something went wrong!', description: fetcher.data });
+          setError('alert', { message: fetcher.data });
           break;
       }
     }
   }, [fetcher.data, fetcher.state]);
 
-  const onSubmit = ({ email, password, passwordRepeat }) => {
+  const onSubmit: SubmitHandler<FormValues> = ({ email, password, passwordRepeat }) => {
     if (password !== passwordRepeat)
       return setError('passwordRepeat', { message: "Passwords don't match" });
     fetcher.submit({ email, password, action: 'signUp' }, { method: 'post', action: routes.home });
@@ -47,18 +54,23 @@ const SignUpForm = () => {
         Sign Up
       </Typography>
       <Box>
-        <EmailInput register={register} errors={errors} />
-        <PasswordInput register={register} errors={errors} />
-        <PasswordInput
+        <EmailInput<FormValues> name="email" register={register} errors={errors} />
+        <PasswordInput<FormValues> name="password" register={register} errors={errors} />
+        <PasswordInput<FormValues>
+          name="passwordRepeat"
           register={register}
           errors={errors}
-          name="passwordRepeat"
           label="Repeat Password"
         />
-        <ErrorAlert errors={errors} watch={watch} clearErrors={clearErrors} />
+        <ErrorAlert<FormValues>
+          name="alert"
+          errors={errors}
+          watch={watch}
+          clearErrors={clearErrors}
+        />
       </Box>
       <Box>
-        <Link component={RouterLink} to={routes.signup}>
+        <Link component={RouterLink} to={routes.signin}>
           Already have an account?
         </Link>
       </Box>

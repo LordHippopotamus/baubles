@@ -3,7 +3,13 @@ import { Link as RouterLink, useFetcher } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import { Form, EmailInput, PasswordInput, ErrorAlert, SubmitButton } from 'components/form';
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+type FormValues = {
+  email: string;
+  password: string;
+  alert: null;
+};
 
 const SignInForm = () => {
   const fetcher = useFetcher();
@@ -14,7 +20,7 @@ const SignInForm = () => {
     clearErrors,
     handleSubmit,
     setError,
-  } = useForm();
+  } = useForm<FormValues>();
 
   useEffect(() => {
     if (fetcher.data && fetcher.state === 'idle') {
@@ -24,8 +30,7 @@ const SignInForm = () => {
           break;
         case 'auth/too-many-requests':
           setError('alert', {
-            message: 'Too many requsts',
-            description:
+            message:
               'Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.',
           });
           break;
@@ -36,13 +41,13 @@ const SignInForm = () => {
           setError('password', { message: 'Wrong password' });
           break;
         default:
-          setError('alert', { message: 'Something went wrong!', description: fetcher.data });
+          setError('alert', { message: fetcher.data });
           break;
       }
     }
   }, [fetcher.data, fetcher.state]);
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit: SubmitHandler<FormValues> = ({ email, password }) => {
     fetcher.submit({ email, password, action: 'signIn' }, { method: 'post', action: routes.home });
   };
 
@@ -52,9 +57,9 @@ const SignInForm = () => {
         Sign In
       </Typography>
       <Box>
-        <EmailInput register={register} errors={errors} />
-        <PasswordInput register={register} errors={errors} />
-        <ErrorAlert errors={errors} watch={watch} clearErrors={clearErrors} />
+        <EmailInput<FormValues> name="email" register={register} errors={errors} />
+        <PasswordInput<FormValues> name="password" register={register} errors={errors} />
+        <ErrorAlert name="alert" errors={errors} watch={watch} clearErrors={clearErrors} />
       </Box>
       <Box>
         <Link component={RouterLink} to={routes.signup}>

@@ -3,24 +3,37 @@ import BaubleCard from './BaubleCard';
 import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
 import { Grid } from '@mui/material';
+import { Bauble } from 'types';
+import { FC } from 'react';
 
-const BaublesList = ({ baubles }) => {
-  const [editModal, setEditModal] = useState(null);
-  const [deleteModal, setDeleteModal] = useState(null);
+type Props = {
+  baubles: Bauble[];
+};
+
+export type Modal = {
+  id: Bauble['id'];
+  name: Bauble['name'];
+};
+
+const BaublesList: FC<Props> = ({ baubles }) => {
+  const [editModal, setEditModal] = useState<null | Modal>(null);
+  const [deleteModal, setDeleteModal] = useState<null | Modal>(null);
 
   return (
     <>
       <Grid container spacing={2}>
         {baubles.map(bauble => (
           <Grid item xs={12} key={bauble.id}>
-            <BaubleCard id={bauble.id} setEditModal={setEditModal} setDeleteModal={setDeleteModal}>
-              {bauble.name}
-            </BaubleCard>
+            <BaubleCard
+              bauble={bauble}
+              openEditModal={() => setEditModal({ id: bauble.id, name: bauble.name })}
+              openDeleteModal={() => setDeleteModal({ id: bauble.id, name: bauble.name })}
+            />
           </Grid>
         ))}
       </Grid>
-      <EditModal editModal={editModal} setEditModal={setEditModal} />
-      <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} />
+      <EditModal editModal={editModal} onClose={() => setEditModal(null)} />
+      <DeleteModal deleteModal={deleteModal} onClose={() => setDeleteModal(null)} />
     </>
   );
 };

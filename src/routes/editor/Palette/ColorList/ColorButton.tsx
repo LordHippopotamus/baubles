@@ -1,26 +1,30 @@
 import { Add, Circle } from '@mui/icons-material';
-import { Grow, IconButton } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useSelectColor } from 'hooks/editor';
+import { FC, MouseEventHandler } from 'react';
+import { Color } from 'types';
 
-const ColorButton = ({ open, id, color, handleColorModal, handleContextMenu, index, array }) => {
+type Props = {
+  color: Color;
+  onContextMenu: MouseEventHandler;
+  onPickColor: MouseEventHandler;
+};
+
+const ColorButton: FC<Props> = ({ color, onContextMenu, onPickColor }) => {
   const selectColor = useSelectColor();
 
+  if (color.color) {
+    return (
+      <IconButton size="large" onClick={() => selectColor(color.id)} onContextMenu={onContextMenu}>
+        <Circle sx={{ color: color.color }} fontSize="large" />
+      </IconButton>
+    );
+  }
+
   return (
-    <Grow in={open} {...(open ? { timeout: (array.length - 1 - index) * 100 } : {})}>
-      {color ? (
-        <IconButton
-          size="large"
-          onContextMenu={event => handleContextMenu(event, id)}
-          onClick={() => selectColor(id)}
-        >
-          <Circle sx={{ color }} fontSize="large" />
-        </IconButton>
-      ) : (
-        <IconButton size="large" onClick={() => handleColorModal(id)}>
-          <Add fontSize="large" />
-        </IconButton>
-      )}
-    </Grow>
+    <IconButton size="large" onClick={onPickColor}>
+      <Add fontSize="large" />
+    </IconButton>
   );
 };
 

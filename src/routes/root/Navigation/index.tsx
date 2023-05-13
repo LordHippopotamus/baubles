@@ -1,5 +1,5 @@
 import { AppBar, Box, Toolbar } from '@mui/material';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Account from './Account';
 import Drawer from './Drawer';
@@ -7,7 +7,7 @@ import Logo from './Logo';
 import Tools from './Tools';
 import ThemeToggler from './ThemeToggler';
 
-const Navigation = () => {
+const Navigation: FC = () => {
   const { pathname } = useLocation();
   const isEditor = pathname === '/editor';
 
@@ -20,7 +20,7 @@ const Navigation = () => {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
-        pl={{ xs: !isEditor && 2, sm: !isEditor && 3 }}
+        pl={{ xs: !isEditor ? 2 : 0, sm: !isEditor ? 3 : 0 }}
         pr={{ xs: 2, sm: 3 }}
       >
         {isEditor ? <Tools handleDrawer={handleDrawer} /> : <Logo />}

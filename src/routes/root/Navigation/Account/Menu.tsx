@@ -1,10 +1,15 @@
 import { CircularProgress, List, ListItem, ListItemButton, Popover } from '@mui/material';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Link, useFetcher } from 'react-router-dom';
 import { routes } from 'utils/routes';
 import { useUser } from 'hooks/user';
 
-const Menu = ({ anchor, handleClose }) => {
+type Props = {
+  anchor: null | Element;
+  handleClose: () => void;
+};
+
+const Menu: FC<Props> = ({ anchor, handleClose }) => {
   const user = useUser();
   const fetcher = useFetcher();
   const loading = fetcher.state !== 'idle';

@@ -1,8 +1,15 @@
-import { startAfter } from 'firebase/firestore';
+import { QueryConstraint, startAfter } from 'firebase/firestore';
 import { getDocs, getSnap, getDocsCount } from 'lib/firebase';
 import { useEffect, useState } from 'react';
 
-export const useInfiniteQuery = ({ path = [], options = [] }, initialData = []) => {
+interface baseDoc {
+  id: string;
+}
+
+export const useInfiniteQuery = <T extends baseDoc>(
+  { path, options }: { path: [string, ...string[]]; options: QueryConstraint[] },
+  initialData: T[] = []
+): { loading: boolean; hasMore: boolean; data: T[]; fetchData: () => Promise<void> } => {
   const [data, setData] = useState(initialData);
   const [loading, setLoading] = useState(false);
   const [lastDocId, setLastDocId] = useState(initialData[initialData.length - 1].id);
@@ -13,7 +20,7 @@ export const useInfiniteQuery = ({ path = [], options = [] }, initialData = []) 
 
     setLoading(true);
     const cursor = await getSnap([...path, lastDocId]);
-    const docs = await getDocs(path, [...options, startAfter(cursor)]);
+    const docs = await getDocs<T>(path, [...options, startAfter(cursor)]);
     setData(prev => [...prev, ...docs]);
     setLastDocId(docs[docs.length - 1].id);
     setLoading(false);

@@ -9,31 +9,42 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC, useEffect } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useFetcher } from 'react-router-dom';
 import { useUser } from 'hooks/user';
+import { Modal } from '.';
 
-const DeleteModal = ({ deleteModal, setDeleteModal }) => {
+type Props = {
+  deleteModal: Modal | null;
+  onClose: () => void;
+};
+
+type FormValues = {
+  name: string;
+};
+
+const DeleteModal: FC<Props> = ({ deleteModal, onClose }) => {
   const fetcher = useFetcher();
   const user = useUser();
 
-  const { register, watch, handleSubmit, reset } = useForm({ defaultValues: { name: '' } });
+  const { register, watch, handleSubmit, reset } = useForm<FormValues>({
+    defaultValues: { name: '' },
+  });
   const watchName = watch('name');
 
   const handleClose = () => {
-    if (fetcher.state === 'idle') {
-      reset();
-      setDeleteModal(null);
-    }
+    reset();
+    onClose();
   };
 
   useEffect(() => {
     fetcher.state === 'idle' && fetcher.data && handleClose();
   }, [fetcher.state, fetcher.data]);
 
-  const onSubmit = async () => {
-    fetcher.submit({ id: deleteModal.id }, { method: 'delete', action: `/users/${user.uid}` });
+  const onSubmit: SubmitHandler<FormValues> = async () => {
+    deleteModal &&
+      fetcher.submit({ id: deleteModal.id }, { method: 'delete', action: `/users/${user.uid}` });
   };
 
   return (

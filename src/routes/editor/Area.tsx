@@ -1,5 +1,6 @@
 import { useSelectedTool, useSelectedColor, useDraw, useArea } from 'hooks/editor';
 import Preview from 'components/Preview';
+import { MouseEvent } from 'react';
 
 const Area = () => {
   const area = useArea();
@@ -7,7 +8,7 @@ const Area = () => {
   const draw = useDraw();
   const selectedColor = useSelectedColor();
 
-  const handleMove = event => {
+  const handleMove = (event: MouseEvent & { target: SVGPathElement }) => {
     if (event.buttons === 1 && event.target.tagName === 'path') {
       const [x, y] = event.target.id.split(';');
       if (tool === 'brush') draw(+x, +y, selectedColor);
@@ -15,7 +16,7 @@ const Area = () => {
     }
   };
 
-  const handleClick = event => {
+  const handleClick = (event: MouseEvent & { target: SVGPathElement }) => {
     const [x, y] = event.target.id.split(';');
     if (tool === 'brush') draw(+x, +y, selectedColor);
     if (tool === 'eraser') draw(+x, +y, null);

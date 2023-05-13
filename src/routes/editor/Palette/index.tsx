@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { IconButton } from '@mui/material';
 import { Palette as PaletteIcon } from '@mui/icons-material';
 import { useSelectedColor } from 'hooks/editor';
 import ColorList from './ColorList';
 
-const Palette = () => {
+const Palette: FC = () => {
   const color = useSelectedColor();
   const [open, setOpen] = useState(false);
 

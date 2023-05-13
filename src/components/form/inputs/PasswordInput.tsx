@@ -1,14 +1,27 @@
 import { Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { useState } from 'react';
+import { FieldValues, FormState, Path, UseFormRegister } from 'react-hook-form';
 
-const PasswordInput = ({ register, errors, name = 'password', label = 'Password' }) => {
+type Props<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  errors: FormState<T>['errors'];
+  name: Path<T>;
+  label?: string;
+};
+
+const PasswordInput = <T extends FieldValues>({
+  register,
+  errors,
+  name,
+  label = 'Password',
+}: Props<T>): JSX.Element => {
   const [visible, setVisible] = useState(false);
   return (
     <TextField
       {...register(name)}
       error={!!errors[name]}
-      helperText={errors[name]?.message}
+      helperText={errors[name]?.message as string}
       name={name}
       label={label}
       fullWidth

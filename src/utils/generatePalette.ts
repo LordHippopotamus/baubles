@@ -1,4 +1,6 @@
-export const generatePalette = () => ([
+import { Palette } from 'types';
+
+export const generatePalette = (): Palette => [
   { id: 1, color: null, selected: false },
   { id: 2, color: null, selected: false },
   { id: 3, color: null, selected: false },
@@ -8,4 +10,4 @@ export const generatePalette = () => ([
   { id: 7, color: null, selected: false },
   { id: 8, color: null, selected: false },
   { id: 9, color: null, selected: false },
-]);
+];

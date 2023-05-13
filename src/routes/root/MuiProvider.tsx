@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 import { createTheme, CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
 import { useColorMode } from 'hooks/colorMode';
 import '@fontsource/roboto/300.css';
@@ -6,7 +6,11 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-const MuiProvider = ({ children }) => {
+type Props = {
+  children: ReactNode;
+};
+
+const MuiProvider: FC<Props> = ({ children }) => {
   const [colorMode] = useColorMode();
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -19,7 +23,7 @@ const MuiProvider = ({ children }) => {
           mode: colorMode === 'auto' ? systemColorMode : colorMode,
         },
       }),
-    [prefersDarkMode, colorMode]
+    [systemColorMode, colorMode]
   );
 
   return (

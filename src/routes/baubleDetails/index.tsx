@@ -1,17 +1,19 @@
-import { useLoaderData } from 'react-router-dom';
+import { LoaderFunction, useLoaderData } from 'react-router-dom';
 import { Box, Container, Divider } from '@mui/material';
 import { getDoc } from 'lib/firebase';
 import BaubleInfo from './BaubleInfo';
 import Preview from 'components/Preview';
+import { Bauble, UserDetails } from 'types';
+import { FC } from 'react';
 
-export const loader = async ({ params }) => {
-  const bauble = await getDoc(['baubles', params.baubleId]);
-  const owner = await getDoc(['users', bauble.owner]);
+export const loader: LoaderFunction = async ({ params }) => {
+  const bauble = await getDoc<Bauble>(['baubles', params.baubleId as string]);
+  const owner = await getDoc<UserDetails>(['users', bauble.owner]);
   return { bauble, owner };
 };
 
-const BaubleDetails = () => {
-  const { bauble, owner } = useLoaderData();
+const BaubleDetails: FC = () => {
+  const { bauble, owner } = useLoaderData() as { bauble: Bauble; owner: UserDetails };
 
   return (
     <Box

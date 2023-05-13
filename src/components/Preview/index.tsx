@@ -1,7 +1,17 @@
 import { useTheme } from '@mui/material';
+import { FC } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { Area } from 'types';
 
-const Preview = ({ area, wrapperProps, componentProps, svgProps, rectProps }) => {
+type Props = {
+  area: Area;
+  wrapperProps?: any;
+  componentProps?: any;
+  svgProps?: any;
+  rectProps?: any;
+};
+
+const Preview: FC<Props> = ({ area, wrapperProps, componentProps, svgProps, rectProps }) => {
   const { palette } = useTheme();
 
   return (

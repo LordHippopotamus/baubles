@@ -3,14 +3,23 @@ import Card from './Card';
 import LoadMoreButton from './LoadMoreButton';
 import NoMoreResultsAlert from './NoMoreResultsAlert';
 import { useInfiniteQuery } from './infiniteQuery';
+import { FC } from 'react';
+import { Bauble } from 'types';
+import { QueryConstraint } from 'firebase/firestore';
 
-const InfiniteList = ({ path, options, initialData }) => {
+type Props = {
+  path: [string, ...string[]];
+  options: QueryConstraint[];
+  initialData: Bauble[];
+};
+
+const InfiniteList: FC<Props> = ({ path, options, initialData }) => {
   const {
     loading,
     hasMore,
     data: baubles,
     fetchData,
-  } = useInfiniteQuery({ path, options }, initialData);
+  } = useInfiniteQuery<Bauble>({ path, options }, initialData);
 
   return (
     <>
@@ -30,7 +39,7 @@ const InfiniteList = ({ path, options, initialData }) => {
 
       <Box mt={2}>
         {hasMore ? (
-          <LoadMoreButton loading={loading} handleClick={fetchData} />
+          <LoadMoreButton loading={loading} onClick={fetchData} />
         ) : (
           <NoMoreResultsAlert />
         )}

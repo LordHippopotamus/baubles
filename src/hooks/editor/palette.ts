@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { PaletteContext } from 'context/editor';
+import { Color } from 'types';
 
 export const usePalette = () => {
   const [palette] = useContext(PaletteContext);
@@ -15,13 +16,13 @@ export const useSelectedColor = () => {
 export const useSelectColor = () => {
   const [palette, setPalette] = useContext(PaletteContext);
 
-  return id => setPalette(palette.map(el => ({ ...el, selected: el.id === id })));
+  return (id: number) => setPalette(palette.map(el => ({ ...el, selected: el.id === id })));
 };
 
 export const usePickColor = () => {
   const [palette, setPalette] = useContext(PaletteContext);
 
-  return (id, color) => {
+  return (id: Color['id'], color: Color['color']) => {
     if (color) {
       setPalette(
         palette.map(el =>

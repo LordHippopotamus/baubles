@@ -9,8 +9,14 @@ import {
 import { Link, useFetcher, useSearchParams } from 'react-router-dom';
 import { useArea, usePalette } from 'hooks/editor';
 import { routes } from 'utils/routes';
+import { FC } from 'react';
 
-const Drawer = ({ open, handleClose }) => {
+type Props = {
+  open: boolean;
+  handleClose: () => void;
+};
+
+const Drawer: FC<Props> = ({ open, handleClose }) => {
   const fetcher = useFetcher();
   const [searchParams] = useSearchParams();
 
@@ -22,7 +28,7 @@ const Drawer = ({ open, handleClose }) => {
       {
         area: JSON.stringify(area),
         palette: JSON.stringify(palette),
-        bauble: searchParams.get('bauble'),
+        bauble: searchParams.get('bauble') as string,
       },
       { method: 'put', action: routes.editor }
     );

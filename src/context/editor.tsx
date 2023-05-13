@@ -1,19 +1,30 @@
-import { createContext, useEffect, useState } from 'react';
+import { FC, Dispatch, SetStateAction, createContext, useEffect, useState, ReactNode } from 'react';
+import { Palette, Area, Bauble } from 'types';
 import { useRouteLoaderData } from 'react-router-dom';
 import { generatePalette } from 'utils/generatePalette';
 
-export const ToolContext = createContext();
-export const PaletteContext = createContext();
-export const AreaContext = createContext();
+type Tool = 'pan' | 'editor' | 'brush' | 'eraser';
 
-const defaultPalette = generatePalette()
+type ToolContext = [Tool, Dispatch<SetStateAction<Tool>>];
+type PaletteContext = [Palette, Dispatch<SetStateAction<Palette>>];
+type AreaContext = [Area, Dispatch<SetStateAction<Area>>];
 
-const EditorProvider = ({ children }) => {
-  const bauble = useRouteLoaderData('editor');
+type Props = {
+  children: ReactNode;
+};
 
-  const [tool, setTool] = useState('pan');
-  const [palette, setPalette] = useState(defaultPalette);
-  const [area, setArea] = useState([]);
+export const ToolContext = createContext<ToolContext>(['pan', () => undefined]);
+export const PaletteContext = createContext<PaletteContext>([[], () => undefined]);
+export const AreaContext = createContext<AreaContext>([[], () => undefined]);
+
+const defaultPalette = generatePalette();
+
+const EditorProvider: FC<Props> = ({ children }) => {
+  const bauble = useRouteLoaderData('editor') as Bauble;
+
+  const [tool, setTool] = useState<Tool>('pan');
+  const [palette, setPalette] = useState<Palette>(defaultPalette);
+  const [area, setArea] = useState<Area>([]);
 
   useEffect(() => {
     if (bauble) {

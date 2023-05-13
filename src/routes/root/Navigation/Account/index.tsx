@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { IconButton } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import { useUser } from 'hooks/user';
@@ -8,9 +8,9 @@ import Menu from './Menu';
 const Account = () => {
   const user = useUser();
 
-  const [anchor, setAnchor] = useState(null);
+  const [anchor, setAnchor] = useState<null | Element>(null);
 
-  const handleOpen = event => setAnchor(event.currentTarget);
+  const handleOpen = (event: MouseEvent) => setAnchor(event.currentTarget);
   const handleClose = () => setAnchor(null);
 
   if (!user) return <LoginLinks />;

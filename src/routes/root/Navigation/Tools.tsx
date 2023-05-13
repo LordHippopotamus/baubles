@@ -1,8 +1,13 @@
 import { Box, Button, useTheme } from '@mui/material';
 import { Brush, FormatColorReset, Menu, PanTool } from '@mui/icons-material';
 import { useTool } from 'hooks/editor';
+import { FC, ReactNode } from 'react';
 
-const Tools = ({ handleDrawer }) => {
+type Props = {
+  handleDrawer: () => void;
+};
+
+const Tools: FC<Props> = ({ handleDrawer }) => {
   const [tool, setTool] = useTool();
   return (
     <Box>
@@ -18,7 +23,13 @@ const Tools = ({ handleDrawer }) => {
   );
 };
 
-const Tool = ({ icon, active, ...props }) => {
+type ToolProps = {
+  icon: ReactNode;
+  active?: boolean;
+  onClick: () => void;
+};
+
+const Tool: FC<ToolProps> = ({ icon, active = false, onClick }) => {
   const { palette } = useTheme();
 
   return (
@@ -30,7 +41,7 @@ const Tool = ({ icon, active, ...props }) => {
         borderRadius: 0,
         background: active ? palette.action.selected : 'transparent',
       }}
-      {...props}
+      onClick={onClick}
     >
       {icon}
     </Button>
