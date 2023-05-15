@@ -8,6 +8,7 @@ import { FC } from 'react';
 
 type Props = {
   baubles: Bauble[];
+  isOwner: boolean;
 };
 
 export type Modal = {
@@ -15,7 +16,7 @@ export type Modal = {
   name: Bauble['name'];
 };
 
-const BaublesList: FC<Props> = ({ baubles }) => {
+const BaublesList: FC<Props> = ({ baubles, isOwner }) => {
   const [editModal, setEditModal] = useState<null | Modal>(null);
   const [deleteModal, setDeleteModal] = useState<null | Modal>(null);
 
@@ -26,6 +27,7 @@ const BaublesList: FC<Props> = ({ baubles }) => {
           <Grid item xs={12} key={bauble.id}>
             <BaubleCard
               bauble={bauble}
+              isOwner={isOwner}
               openEditModal={() => setEditModal({ id: bauble.id, name: bauble.name })}
               openDeleteModal={() => setDeleteModal({ id: bauble.id, name: bauble.name })}
             />

@@ -7,23 +7,26 @@ import { FC } from 'react';
 
 type Props = {
   bauble: Bauble;
+  isOwner: boolean;
   openEditModal: () => void;
   openDeleteModal: () => void;
 };
 
-const BaubleCard: FC<Props> = ({ bauble, openEditModal, openDeleteModal }) => (
+const BaubleCard: FC<Props> = ({ bauble, isOwner, openEditModal, openDeleteModal }) => (
   <Card sx={{ position: 'relative' }} component="div">
-    <Box zIndex={1} position="absolute" display="flex" gap={1} right={0} mr={2} mt={2}>
-      <IconButton onClick={openEditModal} size="large" color="primary">
-        <Edit />
-      </IconButton>
-      <IconButton onClick={openDeleteModal} size="large" color="error">
-        <Delete />
-      </IconButton>
-    </Box>
+    {isOwner && (
+      <Box zIndex={1} position="absolute" display="flex" gap={1} right={0} mr={2} mt={2}>
+        <IconButton onClick={openEditModal} size="large" color="primary">
+          <Edit />
+        </IconButton>
+        <IconButton onClick={openDeleteModal} size="large" color="error">
+          <Delete />
+        </IconButton>
+      </Box>
+    )}
     <CardActionArea
       component={Link}
-      to={`${routes.editor}?bauble=${bauble.id}`}
+      to={isOwner ? `${routes.editor}?bauble=${bauble.id}` : `/baubles/${bauble.id}`}
       sx={{
         p: 3,
         width: 1,
