@@ -51,10 +51,12 @@ export const action: ActionFunction = async ({ request }) => {
   return 1;
 };
 
-// TODO: fix user still can see change and delete button on cards after sign out
-
 const UserDetails = () => {
-  const { user, baubles, isOwner } = useLoaderData() as {
+  const {
+    user,
+    baubles: initialBaubles,
+    isOwner,
+  } = useLoaderData() as {
     user: TUserDetails;
     baubles: Bauble[];
     isOwner: boolean;
@@ -64,7 +66,7 @@ const UserDetails = () => {
     <Container sx={{ my: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <UserInfo user={user} />
       {isOwner && <CreateBauble />}
-      <BaublesList baubles={baubles} />
+      <BaublesList ownerId={user.uid} initialBaubles={initialBaubles} isOwner={isOwner} />
     </Container>
   );
 };

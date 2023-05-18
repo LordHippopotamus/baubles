@@ -7,7 +7,7 @@ type Props = {
 };
 
 const ToggleButton: FC<Props> = ({ onClick }) => (
-  <Button variant="outlined" sx={{ width: 1, height: '8rem' }} onClick={onClick}>
+  <Button variant="outlined" sx={{ width: 1, height: 80 }} onClick={onClick}>
     <Add />
   </Button>
 );

@@ -3,19 +3,25 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useUser } from 'hooks/user';
 import { FC } from 'react';
 
-const NoMoreResultsAlert: FC = () => {
+type Props = {
+  showLink?: boolean;
+};
+
+const NoMoreResultsAlert: FC<Props> = ({ showLink = true }) => {
   const user = useUser();
 
   return (
     <Alert severity="info">
       <AlertTitle>There&apos;s no more baubles!</AlertTitle>
-      <Link
-        component={RouterLink}
-        to={user ? `/users/${user.uid}` : '/signin'}
-        state={user && { createNewBauble: true }}
-      >
-        Maybe you want to make your own?
-      </Link>
+      {showLink && (
+        <Link
+          component={RouterLink}
+          to={user ? `/users/${user.uid}` : '/signin'}
+          state={user && { createNewBauble: true }}
+        >
+          Maybe you want to make your own?
+        </Link>
+      )}
     </Alert>
   );
 };
