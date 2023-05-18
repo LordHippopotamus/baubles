@@ -21,19 +21,13 @@ export const useInfiniteQuery = <T extends baseDoc>(
     setLoading(true);
     const cursor = await getSnap([...path, lastDocId]);
     const docs = await getDocs<T>(path, [...options, startAfter(cursor)]);
+    const docsCount = await getDocsCount(path);
+
     setData(prev => [...prev, ...docs]);
     setLastDocId(docs[docs.length - 1].id);
+    setHasMore(docsCount > data.length + docs.length);
     setLoading(false);
   };
-
-  const checkHasMore = async () => {
-    const docsCount = await getDocsCount(path);
-    setHasMore(docsCount > data.length);
-  };
-
-  useEffect(() => {
-    checkHasMore();
-  }, [data]);
 
   return { loading, hasMore, data, fetchData };
 };
