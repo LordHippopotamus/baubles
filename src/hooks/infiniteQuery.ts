@@ -1,6 +1,6 @@
 import { QueryConstraint, startAfter } from 'firebase/firestore';
 import { getDocs, getSnap, getDocsCount } from 'lib/firebase';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface baseDoc {
   id: string;
