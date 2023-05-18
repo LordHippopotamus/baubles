@@ -52,7 +52,11 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 const UserDetails = () => {
-  const { user, baubles, isOwner } = useLoaderData() as {
+  const {
+    user,
+    baubles: initialBaubles,
+    isOwner,
+  } = useLoaderData() as {
     user: TUserDetails;
     baubles: Bauble[];
     isOwner: boolean;
@@ -62,7 +66,7 @@ const UserDetails = () => {
     <Container sx={{ my: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <UserInfo user={user} />
       {isOwner && <CreateBauble />}
-      <BaublesList baubles={baubles} isOwner={isOwner} />
+      <BaublesList ownerId={user.uid} initialBaubles={initialBaubles} isOwner={isOwner} />
     </Container>
   );
 };

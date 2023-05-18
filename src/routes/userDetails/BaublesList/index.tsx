@@ -2,13 +2,18 @@ import { useState } from 'react';
 import BaubleCard from './BaubleCard';
 import EditModal from './EditModal';
 import DeleteModal from './DeleteModal';
-import { Grid } from '@mui/material';
-import { Bauble } from 'types';
+import { Grid, Skeleton } from '@mui/material';
+import { Bauble, UserDetails } from 'types';
 import { FC } from 'react';
+import { useInfiniteQuery } from 'hooks/infiniteQuery';
+import { limit, orderBy } from 'firebase/firestore';
+import { LoadingButton } from '@mui/lab';
+import NoMoreResultsAlert from 'components/NoMoreResultsAlert';
 
 type Props = {
-  baubles: Bauble[];
+  initialBaubles: Bauble[];
   isOwner: boolean;
+  ownerId: UserDetails['uid'];
 };
 
 export type Modal = {
@@ -16,7 +21,17 @@ export type Modal = {
   name: Bauble['name'];
 };
 
-const BaublesList: FC<Props> = ({ baubles, isOwner }) => {
+const BaublesList: FC<Props> = ({ initialBaubles, isOwner }) => {
+  const {
+    loading,
+    hasMore,
+    data: baubles,
+    fetchData,
+  } = useInfiniteQuery<Bauble>(
+    { path: ['baubles'], options: [orderBy('createdAt', 'desc'), limit(10)] },
+    initialBaubles
+  );
+
   const [editModal, setEditModal] = useState<null | Modal>(null);
   const [deleteModal, setDeleteModal] = useState<null | Modal>(null);
 
@@ -33,7 +48,25 @@ const BaublesList: FC<Props> = ({ baubles, isOwner }) => {
             />
           </Grid>
         ))}
+        {loading &&
+          [...Array(10).keys()].map(el => (
+            <Grid item xs={12} key={el}>
+              <Skeleton variant="rounded" height={80} />
+            </Grid>
+          ))}
       </Grid>
+      {hasMore ? (
+        <LoadingButton
+          sx={{ width: '100%', height: 80 }}
+          size="large"
+          loading={loading}
+          onClick={fetchData}
+        >
+          Load More
+        </LoadingButton>
+      ) : (
+        <NoMoreResultsAlert showLink={false} />
+      )}
       <EditModal editModal={editModal} onClose={() => setEditModal(null)} />
       <DeleteModal deleteModal={deleteModal} onClose={() => setDeleteModal(null)} />
     </>

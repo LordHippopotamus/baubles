@@ -4,6 +4,8 @@ import { FC, MouseEventHandler, MouseEvent } from 'react';
 import { Anchor } from '.';
 import { Color } from 'types';
 
+// TODO: fix menu
+
 type Props = {
   anchor: Anchor | null;
   onClose: MouseEventHandler;
