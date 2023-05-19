@@ -3,11 +3,16 @@ import SignInForm from './SignInForm';
 import { FC } from 'react';
 
 const SignIn: FC = () => (
-  <Container>
-    <Paper
-      sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
-      elevation={1}
-    >
+  <Container
+    sx={{
+      minHeight: { xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' },
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      py: 8,
+    }}
+  >
+    <Paper elevation={1}>
       <SignInForm />
     </Paper>
   </Container>
